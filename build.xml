@@ -55,8 +55,6 @@
 
 		<!-- Copies webinos/web_root/webinos.js to wrt/assets folder -->
 		<copy file="${basedir}/node_modules/webinos-pzp/web_root/webinos.js" todir="${basedir}/wrt/assets/js" />
-		<copy file="app/assets/modules/certificate_manager.node" todir="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules" force="true" overwrite="true"/>
-		<copy file="app/assets/modules/pm.node" todir="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules" force="true" overwrite="true"/>
 	</target>
 
 	<target name="gen-webinos-clean">
