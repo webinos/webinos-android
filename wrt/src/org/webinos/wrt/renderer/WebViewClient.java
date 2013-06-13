@@ -26,10 +26,14 @@ import org.webinos.wrt.core.WrtManager;
 import org.webinos.wrt.ui.RendererActivity;
 import org.webinos.wrt.util.AssetUtils;
 
+import us.costan.chrome.ChromeView;
+import us.costan.chrome.ChromeViewClient;
+
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.KeyEvent;
 
-public class WebViewClient extends android.webkit.WebViewClient {
+public class WebViewClient extends ChromeViewClient {
 
 	private RendererActivity activity;
 
@@ -40,8 +44,9 @@ public class WebViewClient extends android.webkit.WebViewClient {
 	}
 
 	@Override
-	public void onPageStarted(android.webkit.WebView webView, String url,
-			Bitmap favicon) {
+	
+	public void onPageStarted(ChromeView webView, String url, Bitmap favicon) {
+	  
 		Log.v(TAG,"onPage started called");
 		super.onPageStarted(webView, url, favicon);
 		WebView wgtView = (WebView) webView;
@@ -55,10 +60,10 @@ public class WebViewClient extends android.webkit.WebViewClient {
 	}
 
 	@Override
-	public void onPageFinished(android.webkit.WebView webView, String url) {
+	public void onPageFinished(ChromeView webView, String url) {
 		super.onPageFinished(webView, url);
 		Log.v(TAG,"onPage finished called");
-		/* TEMPORARILY disabled - webinos.js is no too long to go in a String (!)
+		// TEMPORARILY disabled - webinos.js is no too long to go in a String (!)
 		WebView wgtView = (WebView) webView;
 		try {
 			wgtView.injectScripts(new String[] {
@@ -66,6 +71,18 @@ public class WebViewClient extends android.webkit.WebViewClient {
 							ClientSocket.WEBINOSJS_ASSET), "alert('Injected webinos');" });
 		} catch (IOException ioe) {
 			Log.v(TAG, "Unable to inject scripts; exception: ", ioe);
-		} */
+		} 
+	}
+	
+	@Override
+	public boolean shouldOverrideKeyEvent(ChromeView webview, KeyEvent event) {
+	    int keyCode = event.getKeyCode();
+
+	    if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	        if(webview.canGoBack())
+	            webview.goBack();
+            return true;
+        } 
+	    return false;
 	}
 }

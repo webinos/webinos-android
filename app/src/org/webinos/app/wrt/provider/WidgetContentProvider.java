@@ -29,6 +29,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
+import org.webinos.app.wrt.mgr.WidgetConfig;
+import org.webinos.app.wrt.mgr.WidgetManagerService;
+
+import android.util.Log;
+
 public class WidgetContentProvider extends ContentProvider {
 	
 	private static final String FILE_BASE_URI = "file:///data/data/org.webinos.app/wrt";
@@ -53,7 +58,23 @@ public class WidgetContentProvider extends ContentProvider {
 
 	@Override 
 	public String getType(Uri uri) {
-		throw new UnsupportedOperationException("Not supported by this provider");
+	    Log.v("WidgetContentProvider", "getType uri" + uri);
+	    
+	    String[] segments = uri.getPath().split("/");
+	    String installId = segments[1];
+	    Log.v("WidgetContentProvider", installId);
+        WidgetConfig widgetConfig = WidgetManagerService.getWidgetManagerInstance().getWidgetConfig(installId);
+
+        if(widgetConfig == null) {
+            Log.e("WidgetContentProvider", "widgetConfig is null - widget not properly installed");
+        }
+        if(widgetConfig.startFile != null)
+        {    
+            Log.d("WidgetContentProvider MIME type:", widgetConfig.startFile.contentType);
+            return widgetConfig.startFile.contentType;
+        }  
+        else
+            throw new UnsupportedOperationException("wigetConfig.startFile is empty");
 	}
 
 	@Override

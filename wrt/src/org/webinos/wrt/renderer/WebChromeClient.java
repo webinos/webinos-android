@@ -21,13 +21,15 @@ package org.webinos.wrt.renderer;
 
 import org.webinos.wrt.ui.RendererActivity;
 
+import us.costan.chrome.ChromeJsResult;
+import us.costan.chrome.ChromeView;
+import us.costan.chrome.ChromeWebClient;
+
 import android.app.AlertDialog;
 import android.util.Log;
 import android.webkit.ConsoleMessage;
-import android.webkit.JsResult;
-import android.webkit.WebView;
 
-public class WebChromeClient extends android.webkit.WebChromeClient{
+public class WebChromeClient extends ChromeWebClient{
 
 	private RendererActivity activity;
 
@@ -38,7 +40,10 @@ public class WebChromeClient extends android.webkit.WebChromeClient{
 	}
 
 	@Override
-    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+	
+	public boolean onJsAlert(ChromeView view, String url, String message,
+	          ChromeJsResult result) {
+	
         Log.d(TAG, message);
         new AlertDialog.Builder(view.getContext()).setMessage(message).setCancelable(true).show();
         result.confirm();
@@ -46,7 +51,8 @@ public class WebChromeClient extends android.webkit.WebChromeClient{
     }
 	
 	@Override
-	public void onReceivedTitle(WebView webView, String title) {
+	
+	public void onReceivedTitle(ChromeView webView, String title) {
 		if(title != null && !title.isEmpty())
 			activity.setTitle(title);
 	}
