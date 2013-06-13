@@ -28,9 +28,12 @@ import org.webinos.wrt.renderer.WebChromeClient;
 import org.webinos.wrt.renderer.WebView;
 import org.webinos.wrt.renderer.WebViewClient;
 
+import us.costan.chrome.ChromeView;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 public class RendererActivity extends Activity implements WrtManager.LaunchListener {
 
@@ -40,10 +43,12 @@ public class RendererActivity extends Activity implements WrtManager.LaunchListe
 	private String installId;
 	public String instanceId;
 	private ClientSocket socket;
+	private String TAG = RendererActivity.class.getName();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ChromeView.initialize(this);
 		setContentView(R.layout.main);
 
 		WrtManager wrtManager = WrtManager.getInstance(this, this);
@@ -56,6 +61,8 @@ public class RendererActivity extends Activity implements WrtManager.LaunchListe
 	}
 
 	private void initRenderer() {
+	    
+//	    android.os.Debug.waitForDebugger();  // enable debug
 		String id = getIntent().getStringExtra(WrtReceiver.ID);
 		if(id == null || id.isEmpty())
 			throw new IllegalArgumentException("WrtActivity.onCreate(): missing installId");
@@ -73,10 +80,12 @@ public class RendererActivity extends Activity implements WrtManager.LaunchListe
 			}
 		}
 		instanceId = inst;
-
+		
 		webView = (WebView) findViewById(R.id.webview);
-		webView.setWebViewClient(new WebViewClient(this));
-		webView.setWebChromeClient(new WebChromeClient(this));
+				
+		webView.setChromeViewClient(new WebViewClient(this));
+        webView.setChromeWebClient(new WebChromeClient(this)); 
+		
 		socket = new ClientSocket(webView, widgetConfig, instanceId);
 		/* Inject the socket object */
 		webView.addJavascriptInterface(socket, "__webinos");
@@ -85,7 +94,7 @@ public class RendererActivity extends Activity implements WrtManager.LaunchListe
 
 		WrtManager.getInstance().put(instanceId, this);
 	}
-
+	
 	public ClientSocket getClientSocket() {
 		return socket;
 	}
@@ -96,5 +105,16 @@ public class RendererActivity extends Activity implements WrtManager.LaunchListe
 			socket.dispose();
 		super.onDestroy();
 	}
-
+	
+	 @Override
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.v(TAG, "onKeyDown");
+        
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.v(TAG, "calling goBack");
+                this.finish();
+                return true;
+        }
+            return super.onKeyDown(keyCode, event);
+	 } 
 }

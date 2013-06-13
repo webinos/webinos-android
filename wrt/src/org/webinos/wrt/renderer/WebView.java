@@ -19,27 +19,37 @@
 
 package org.webinos.wrt.renderer;
 
+import org.chromium.content.browser.ContentViewCore.JavaScriptCallback;
+
+import us.costan.chrome.ChromeSettings;
+import us.costan.chrome.ChromeView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.webkit.WebSettings;
+import android.view.KeyEvent;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class WebView extends android.webkit.WebView {
+public class WebView extends ChromeView {
 
 	private static final String TAG = "org.webinos.wrt.renderer.WebView";
 	public WebView(Context context, AttributeSet as) {
 		super(context, as);
-		WebSettings settings = getSettings();
+		ChromeSettings settings = getSettings();
 		settings.setJavaScriptEnabled(true);
+		settings.setAllowContentAccess(true);  //true by default
+		
+		settings.setBuiltInZoomControls(true);
+		settings.setDisplayZoomControls(false);
+
 		/* temporary: until we have the widget API */
 		settings.setDomStorageEnabled(true);
 		/* TO avoid the scrollbar issue
 		 * http://forum.jquery.com/topic/extra-vertical-white-space-at-right-on-screen-for-android-phone */
 		setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 	}
-
+	
+	
 	public void injectScript(String script) {
 		Log.i(TAG,"inject script called:"+ script);
 		try {
@@ -57,8 +67,14 @@ public class WebView extends android.webkit.WebView {
 	public void injectScripts(String[] scripts) {
 		Log.i(TAG,"inject scripts called");
 		try {
-			for (String script : scripts)
-				loadUrl("javascript:(function(){" + script + "})()");
+			JavaScriptCallback callback = null;
+            for (String script : scripts)
+            {    
+               Log.v("WebView-injectScripts:", "load js"); 
+			    
+			   this.evaluateJavaScript(script, callback);
+            }  
+			    
 		} catch (Throwable t) {
 			Log.e(TAG, "Error in injecting script", t);
 		}

@@ -56,3 +56,31 @@ or
 adb install app/bin/app-debug.apk
 adb install wrt/bin/wrt-debug.apk
 
+## Use chromeview branch
+
+### Build chromeview
+git clone -b webinos https://github.com/ziransun/chromeview.git
+
+cd chromview
+
+ant debug
+ant jar
+
+### build webinos-pzp-android with chromeview 
+
+git clone https://github.com/webinos/webinos-pzp-android.git
+git checkout chromeview
+cd wrt
+android update project --path . --library ../../chromeview
+cd ../
+ant
+
+### Issues
+
+Scrolling is chunky and slow. 
+
+Please file any issues with logs.  
+
+
+
+
