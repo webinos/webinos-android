@@ -56,7 +56,7 @@ or
 adb install app/bin/app-debug.apk
 adb install wrt/bin/wrt-debug.apk
 
-## Use Chromeview branch
+## Use chromeview branch
 
 ### Build chromeview
 git clone -b webinos https://github.com/ziransun/chromeview.git
