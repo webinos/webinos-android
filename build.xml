@@ -38,6 +38,13 @@
 		<copy todir="${basedir}/webinos/web_root/apps/wrt/">
 			<fileset dir="${basedir}/webinos/platform/android/tmp-app-enrolment/installed"/> 
 		</copy> -->
+
+		<!-- delete compiled node addons that were built for pc arch -->
+		<delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node" />
+		<delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node" />
+		<delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node" />
+		<delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/promptMan.node" />
+
 				<!-- Creates app/assets/webinos.zip -->
 		<zip destfile="${basedir}/app/assets/modules/webinos.zip">
 			<zipfileset dir="${basedir}"
@@ -55,8 +62,6 @@
 
 		<!-- Copies webinos/web_root/webinos.js to wrt/assets folder -->
 		<copy file="${basedir}/node_modules/webinos-pzp/web_root/webinos.js" todir="${basedir}/wrt/assets/js" />
-		<copy file="app/assets/modules/certificate_manager.node" todir="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules" force="true" overwrite="true"/>
-		<copy file="app/assets/modules/pm.node" todir="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules" force="true" overwrite="true"/>
 	</target>
 
 	<target name="gen-webinos-clean">
