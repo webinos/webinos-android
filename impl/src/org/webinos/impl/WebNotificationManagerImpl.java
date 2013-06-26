@@ -44,13 +44,13 @@ import android.content.IntentFilter;
 import android.util.Log;
 import android.widget.Button;
 
-import org.webinos.app.R;
+import org.webinos.android.R;
 
 public class WebNotificationManagerImpl extends WebNotificationManager implements IModule {
 
 	IModuleContext ctx;
 	private Context androidContext;
-	private static final String notificationResponseAction = "org.webinos.app.notification.response";
+	private static final String notificationResponseAction = "org.webinos.android.app.notification.response";
 	private static final String TAG = "org.webinos.impl.WebNotificationManagerImpl";
 	
 	private Hashtable<Integer, WebNotificationCallback> successCallbacks = new Hashtable<Integer, WebNotificationCallback>();
