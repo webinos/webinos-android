@@ -25,7 +25,7 @@ import org.webinos.api.DeviceAPIError;
 import org.webinos.api.pzpnotification.PZPNotificationCallback;
 import org.webinos.api.pzpnotification.PZPNotificationManager;
 import org.webinos.api.pzpnotification.PZPonReceiveNotificationCallback;
-import org.webinos.app.R;
+import org.webinos.android.R;
 
 import android.app.Notification;
 import android.app.NotificationManager;

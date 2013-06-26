@@ -18,8 +18,8 @@ package org.webinos.util;
 
 public interface Constants {
 
-	public static final String RESOURCE_DIR = "/data/data/org.webinos.app/uriCache";
-	public static final String MODULE_DIR = "/data/data/org.webinos.app/node_modules";
-	public static final String APP_DIR = "/data/data/org.webinos.app/app";
-	public static final String WRT_DIR = "/data/data/org.webinos.app/wrt";
+	public static final String RESOURCE_DIR = "/data/data/org.webinos.android/uriCache";
+	public static final String MODULE_DIR = "/data/data/org.webinos.android/node_modules";
+	public static final String APP_DIR = "/data/data/org.webinos.android/app";
+	public static final String WRT_DIR = "/data/data/org.webinos.android/wrt";
 }

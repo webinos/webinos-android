@@ -1,6 +1,6 @@
 # webinos-pzp-android
 
-A framework that enables running node.js based webinos PZP on android. 
+The webinos platform for Android, including PZP and WRT, based on Anode.
 
 ## Building webinos for Android from source code
 
