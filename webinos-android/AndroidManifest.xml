@@ -86,8 +86,8 @@
                   android:exported="true"
                   android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         
@@ -148,7 +148,7 @@
         
         <service android:name=".app.wrt.channel.WebinosSocketService">
             <intent-filter>
-                <action android:name="org.webinos.android.wrt.channel.SERVER" />
+                <action android:name="org.webinos.android.wrt.channel.SERVER"/>
             </intent-filter>
         </service>
         
