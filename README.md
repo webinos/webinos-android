@@ -12,7 +12,7 @@ Install a recent version of Python 2.x.
 
 ### Get webinos PZP android on the development host
 
-git clone git@github.com:username/webinos-pzp-android.git
+`git clone git@github.com:username/webinos-pzp-android.git`
 
 ### Get Anode on the development host
 
@@ -22,37 +22,49 @@ The native parts - which include Node.js itself, plus a small number of natively
 
 If you want to build the native components as well, head over to the Anode Build instructions, and also see the instructions for authoring and building native addons.
 
+
+```
 cd <your Anode dir>
+
 git clone git://github.com/paddybyers/anode.git
-Environment variables
-You need to set up the ANDROID_HOME environment variable as described in the Android SDK documentation
+```
 
-export ANDROID_HOME=/path/to/your/Android/SDK
-Then the ANODE_ROOT variable needs to be set up to point to the working copy of the anode repo. If it is cloned directly into <work dir> then you can do:
+#### Environment variables
+You need to set up the `ANDROID_HOME`  environment variable as described in the Android SDK documentation
 
-export ANODE_ROOT=<your Anode dir>/anode
-Build the Android packages on the development host
+`export ANDROID_HOME=/path/to/your/Android/SDK` 
+
+Then the `ANODE_ROOT`  variable needs to be set up to point to the working copy of the anode repo. If it is cloned directly into <work dir> then you can do:
+
+`export ANODE_ROOT=<your Anode dir>/anode` 
+
+#### Build the Android packages on the development host
+
 cd to the location of top-level build file for the Android packages:
 
-cd webinos-pzp-android
+`cd webinos-pzp-android` 
 
 Then build:
 
+```
 npm install
-
 ant
+```
+
 This builds a debug version of the runtime. You can also build a release target:
 
-ant release
+`ant release`
+
 
 ### Install webinos on the target Android devcie
 
 Three apks are generated during build. installer-debug.apk is a combination of app-debug.apk and wrt-debug.apk. You can install Webinos android PZP by doing either
 
-adb install installer/bin/WebinosInstaller-debug.apk
+`adb install installer/bin/WebinosInstaller-debug.apk`
 
 or 
 
+```
 adb install app/bin/app-debug.apk
 adb install wrt/bin/wrt-debug.apk
-
+```
