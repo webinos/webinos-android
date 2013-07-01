@@ -1,0 +1,71 @@
+diff -ru origin/webinos-pzp-android/node_modules/webinos-pzp/lib/pzp_peerCertificateExchange.js ../gguowei/webinos-android/node_modules/webinos-pzp/lib/pzp_peerCertificateExchange.js
+--- origin/webinos-pzp-android/node_modules/webinos-pzp/lib/pzp_peerCertificateExchange.js	2013-07-01 11:55:17.000000000 +0100
++++ ../gguowei/webinos-android/node_modules/webinos-pzp/lib/pzp_peerCertificateExchange.js	2013-07-01 11:42:16.558006036 +0100
+@@ -78,7 +78,7 @@
+ 
+         if(os.platform().toLowerCase() == "android")  {
+             try{
+-                var outfile = path.join("/data/data/org.webinos.app/node_modules/webinos/wp4/webinos/web_root", "testbed", "QR.png");
++                var outfile = path.join("/data/data/org.webinos.android/node_modules/webinos/wp4/webinos/web_root", "testbed", "QR.png");
+                 parent.webinos_manager.Sib.createQRHash(infile, outfile, 200, 200, function(data){
+                     logger.log("calling SIB create QR Hash");
+                     cb(data);
+diff -ru origin/webinos-pzp-android/node_modules/webinos-pzp/lib/pzp_websocket.js ../gguowei/webinos-android/node_modules/webinos-pzp/lib/pzp_websocket.js
+--- origin/webinos-pzp-android/node_modules/webinos-pzp/lib/pzp_websocket.js	2013-07-01 11:55:17.000000000 +0100
++++ ../gguowei/webinos-android/node_modules/webinos-pzp/lib/pzp_websocket.js	2013-07-01 11:42:16.558006036 +0100
+@@ -27,7 +27,7 @@
+     var peerCert = new PzpCommon.certExchange(PzpObject);
+     if (process.platform == "android") {
+         try {
+-            wrtServer = require ("bridge").load ("org.webinos.app.wrt.channel.WebinosSocketServerImpl", exports);
++            wrtServer = require ("bridge").load ("org.webinos.android.app.wrt.channel.WebinosSocketServerImpl", exports);
+         } catch (e) {
+             logger.error ("exception attempting to open wrt server " + e);
+         }
+@@ -289,8 +289,8 @@
+                     if (process.platform == 'android') {
+                         try { var widgetLibrary = require('webinos-widget'); } catch(e) { widgetLibrary = null; }
+                         if(widgetLibrary) {
+-                            process.env.WRT_HOME = '/data/data/org.webinos.app/wrt';
+-                            var bridgewm = require('bridge').load('org.webinos.app.wrt.mgr.WidgetManagerImpl', exports);
++                            process.env.WRT_HOME = '/data/data/org.webinos.android/wrt';
++                            var bridgewm = require('bridge').load('org.webinos.android.app.wrt.mgr.WidgetManagerImpl', exports);
+                             bridgewm.setWidgetProcessor(widgetLibrary.widgetmanager);
+                         }
+                     }
+diff -ru origin/webinos-pzp-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/configuration.js ../gguowei/webinos-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/configuration.js
+--- origin/webinos-pzp-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/configuration.js	2013-07-01 11:55:21.000000000 +0100
++++ ../gguowei/webinos-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/configuration.js	2013-07-01 11:42:16.558006036 +0100
+@@ -19,7 +19,7 @@
+ *******************************************************************************/
+ /**
+  * Creates a webinos configuration
+- * - Creates default directories in .webinos or AppData/Roaming/webinos or /data/data/org.webinos.app
++ * - Creates default directories in .webinos or AppData/Roaming/webinos or /data/data/org.webinos.android
+  * - Read webinos_config and separate them in different files
+  * - Default certificates from client and master
+  *@param {Object} inputConfig - These are command line parameters that are passed by PZH or PZP
+diff -ru origin/webinos-pzp-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/webinosPath.js ../gguowei/webinos-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/webinosPath.js
+--- origin/webinos-pzp-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/webinosPath.js	2013-07-01 11:55:21.000000000 +0100
++++ ../gguowei/webinos-android/node_modules/webinos-pzp/node_modules/webinos-utilities/lib/webinosPath.js	2013-07-01 11:42:16.654006041 +0100
+@@ -32,7 +32,7 @@
+     case "linux":
+       switch(os.platform().toLowerCase()){
+         case "android":
+-          webinosDemo = path.resolve("/data/data/org.webinos.app/webinos");
++          webinosDemo = path.resolve("/data/data/org.webinos.android/webinos");
+           //webinosDemo = path.resolve(process.env.EXTERNAL_STORAGE + "/.webinos/");
+           break;
+         case "linux":
+diff -ru origin/webinos-pzp-android/node_modules/webinos-widget/lib/widgetmanager/config.js ../gguowei/webinos-android/node_modules/webinos-widget/lib/widgetmanager/config.js
+--- origin/webinos-pzp-android/node_modules/webinos-widget/lib/widgetmanager/config.js	2013-07-01 11:55:16.000000000 +0100
++++ ../gguowei/webinos-android/node_modules/webinos-widget/lib/widgetmanager/config.js	2013-07-01 11:42:16.654006041 +0100
+@@ -56,7 +56,7 @@
+   /* FIXME: remove nasty hack */
+   var wrtHome;
+ 	if(process.platform == 'android')
+-	  wrtHome = '/data/data/org.webinos.app/wrt';
++	  wrtHome = '/data/data/org.webinos.android/wrt';
+   else if (process.platform == 'win32' || process.platform == 'linux' || process.platform == 'darwin') {
+ 		var path = require('path');
+     var webinosPath = require("webinos-utilities").webinosPath.webinosPath();
