@@ -43,6 +43,7 @@ public class WebViewClient extends android.webkit.WebViewClient {
 	public void onPageStarted(android.webkit.WebView webView, String url,
 			Bitmap favicon) {
 		Log.v(TAG,"onPage started called");
+		/* Disabled - webinossocket.js is now served from Content Provider as part of webinos.js
 		super.onPageStarted(webView, url, favicon);
 		WebView wgtView = (WebView) webView;
 		try {
@@ -51,7 +52,7 @@ public class WebViewClient extends android.webkit.WebViewClient {
 							ClientSocket.SOCKETJS_ASSET)});
 		} catch (IOException ioe) {
 			Log.v(TAG, "Unable to inject scripts; exception: ", ioe);
-		}
+		} */
 	}
 
 	@Override
