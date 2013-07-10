@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="webinos" default="debug" basedir="./">
 
-	<!-- ANDROID_HOME and ANODE_ROOT environment variables must be defined -->
+    <!-- ANDROID_HOME and ANODE_ROOT environment variables must be defined -->
 
-	<target name="gen-webinos"> 	
+    <target name="gen-webinos"> 	
         <!-- delete compiled node addons that were built for pc arch -->
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/promptMan.node"/>
-		
-		<!-- Creates webinos-android/assets/webinos.zip -->
-		<zip destfile="${basedir}/webinos-android/assets/modules/webinos.zip">
-			<zipfileset dir="${basedir}"
-			    includes="
-				    node_modules/webinos-pzp/,
-				    node_modules/webinos-widget/"
-			    excludes="
-				    **/build/,
-			    	**/deps/,
-				    **/.gitignore"/>
-		</zip>
+
+        <!-- Creates webinos-android/assets/webinos.zip -->
+        <zip destfile="${basedir}/webinos-android/assets/modules/webinos.zip">
+            <zipfileset dir="${basedir}"
+                includes="
+                    node_modules/webinos-pzp/,
+                    node_modules/webinos-widget/"
+                excludes="
+                    **/build/,
+                    **/deps/,
+                    **/.gitignore"/>
+        </zip>
 
         <!-- Copies webinos/web_root/webinos.js to folder
             webinos-android/assets -->
-		<copy file="${basedir}/node_modules/webinos-pzp/web_root/webinos.js"
-		      todir="${basedir}/webinos-android/assets/js"/>
-	</target>
+        <copy file="${basedir}/node_modules/webinos-pzp/web_root/webinos.js"
+              todir="${basedir}/webinos-android/assets/js"/>
+    </target>
 
-	<target name="gen-webinos-clean">
-		<!-- Removes app/assets/webinos.zip -->
-		<delete file="${basedir}/webinos-android/assets/modules/webinos.zip"/>
-		<!-- Removes wrt/assets/js/webinos.js -->
-		<delete file="${basedir}/webinos-android/assets/js/webinos.js"/>
-	</target>
+    <target name="gen-webinos-clean">
+        <!-- Removes webinos-android/assets/webinos.zip -->
+        <delete file="${basedir}/webinos-android/assets/modules/webinos.zip"/>
+        <!-- Removes webinos-android/assets/js/webinos.js -->
+        <delete file="${basedir}/webinos-android/assets/js/webinos.js"/>
+    </target>
 
-	<target name="debug" depends="gen-webinos">
-		<!-- Builds webinos-android/bin/webinos-debug.apk
-		    Can be installed with the command:
-		    adb install webinos-android/bin/webinos-debug.apk -->
-		<ant dir="${basedir}/webinos-android" target="debug"/>
-	</target>
+    <target name="debug" depends="gen-webinos">
+        <!-- Builds webinos-android/bin/webinos-debug.apk
+            Can be installed with the command:
+            adb install webinos-android/bin/webinos-debug.apk -->
+        <ant dir="${basedir}/webinos-android" target="debug"/>
+    </target>
 
-	<target name="release" depends="gen-webinos">
-		<!-- Builds webinos-android/bin/webinos-release.apk
-    		Can be installed with the command:
-    		adb install webinos-android/bin/webinos-release.apk -->
-		<ant dir="${basedir}/webinos-android" target="release"/>
-	</target>
+    <target name="release" depends="gen-webinos">
+        <!-- Builds webinos-android/bin/webinos-release.apk
+            Can be installed with the command:
+            adb install webinos-android/bin/webinos-release.apk -->
+        <ant dir="${basedir}/webinos-android" target="release"/>
+    </target>
 
-	<target name="clean" depends="gen-webinos-clean">
-		<!-- cleans webinos-android/bin/webinos-*.apk -->
-		<ant dir="${basedir}/webinos-android" target="clean" />
-	</target>
+    <target name="clean" depends="gen-webinos-clean">
+        <!-- cleans webinos-android/bin/webinos-*.apk -->
+        <ant dir="${basedir}/webinos-android" target="clean"/>
+    </target>
 </project>
-
