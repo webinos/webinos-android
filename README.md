@@ -26,8 +26,8 @@ Other Unix-like systems or emulated Unix-like environments are not fully tested 
 
 ### Prerequisites
 
-    * Node
-    * Node-gyp
+    * Node.js
+    * node-gyp
     * Git
     * Ant
     * JDK
@@ -40,14 +40,14 @@ Other Unix-like systems or emulated Unix-like environments are not fully tested 
 
 #### Install Node
 
-We have tested building webinos-android with Node v0.8.x. 'apt-get install nodejs' might not give you the wanted Node release, so instead please download a v0.8.x release from here:
+We have tested building webinos-android with Node v0.8.x. 'apt-get install nodejs' might not give you the wanted Node version, so instead please download a v0.8.x release from here:
 
 http://nodejs.org/dist/
 
-Then do a gloabl install manually.
+Then do a global install manually.
 
 
-#### Install Node-gyp globally
+#### Install node-gyp
 
     sudo npm install -g node-gyp
 
@@ -115,7 +115,7 @@ If you are reading this file, you may already have got the webinos-android sourc
 
 ### Build webinos-android
 
-webinos-android is structured as a 2-level package: Npm level and Android project level. To build the apk, go to the top level webinos-android
+webinos-android is structured as a 2-level package: npm level and Android project level. To build the apk, go to the top level webinos-android
 
     cd webinos-android
     
