@@ -1,70 +1,131 @@
-# webinos-pzp-android
+# webinos-android
 
-A framework that enables running node.js based webinos PZP on android. 
-
-## Building webinos for Android from source code
-
-You should have a development host running Linux or Mac, and a target Android device connected to the host via a USB cable, normally. These instructions work on Android development host running Mac or Linux. Provided you're not building the native parts, then Windows/cygwin should also work. Building the native parts on Windows is not fully working yet.
-
-You should have installed latest Android SDK on the development host. You need to install the Android Level 10 API platform.
-
-Install a recent version of Python 2.x.
-
-### Get webinos PZP android on the development host
-
-`git clone git@github.com:username/webinos-pzp-android.git`
-
-### Get Anode on the development host
-
-The webinos runtime for Android is based on the Anode project, which includes a port of Node.js to the Android platform, and a framework for building Node.js modules in Java.
-
-The native parts - which include Node.js itself, plus a small number of natively implemented modules - are pre-built in the webinos tree. This means that you can build only the Java parts to generate the webinos packages, and you do not need to assemble the Android native toolchain.
-
-If you want to build the native components as well, head over to the Anode Build instructions, and also see the instructions for authoring and building native addons.
+The webinos platform for Android, including PZP and WRT, based on Anode.
 
 
-```
-cd <your Anode dir>
+## Release notes
 
-git clone git://github.com/paddybyers/anode.git
-```
-
-#### Environment variables
-You need to set up the `ANDROID_HOME`  environment variable as described in the Android SDK documentation
-
-`export ANDROID_HOME=/path/to/your/Android/SDK` 
-
-Then the `ANODE_ROOT`  variable needs to be set up to point to the working copy of the anode repo. If it is cloned directly into <work dir> then you can do:
-
-`export ANODE_ROOT=<your Anode dir>/anode` 
-
-#### Build the Android packages on the development host
-
-cd to the location of top-level build file for the Android packages:
-
-`cd webinos-pzp-android` 
-
-Then build:
-
-```
-npm install
-ant
-```
-
-This builds a debug version of the runtime. You can also build a release target:
-
-`ant release`
+webinos v0.9.0 for Android for test.
 
 
-### Install webinos on the target Android devcie
+## webinos dependencies
 
-Three apks are generated during build. installer-debug.apk is a combination of app-debug.apk and wrt-debug.apk. You can install Webinos android PZP by doing either
+* webinos-pzp
+* webinos-widget
 
-`adb install installer/bin/WebinosInstaller-debug.apk`
+<br>
 
-or 
+## Build webinos-android from source
 
-```
-adb install app/bin/app-debug.apk
-adb install wrt/bin/wrt-debug.apk
-```
+Our recommended build environment is 32-bit Ubuntu 12.04 or above. If you are using 64-bit Ubuntu, please run the following command:
+
+    sudo apt-get install ia32-libs
+
+Other Unix-like systems or emulated Unix-like environments are not fully tested but should work fine, maybe with some twistings. 
+
+
+### Prerequisites
+
+    * Node.js
+    * node-gyp
+    * Git
+    * Ant
+    * JDK
+    * G++
+    * libgnome-keyring-dev
+    * libssl-dev
+    * Android SDK
+    * Anode
+
+
+#### Install Node
+
+We have tested building webinos-android with Node v0.8.x. 'apt-get install nodejs' might not give you the wanted Node version, so instead please download a v0.8.x release from here:
+
+http://nodejs.org/dist/
+
+Then do a global install manually.
+
+
+#### Install node-gyp
+
+    sudo npm install -g node-gyp
+
+
+#### Install Git
+
+    sudo apt-get install git
+
+
+#### Install Ant
+
+    sudo apt-get install ant
+
+
+#### Install JDK
+
+    sudo apt-get install openjdk-7-jdk
+
+
+#### Install G++
+
+    sudo apt-get install g++
+
+
+#### Install libgnome-keyring-dev
+
+    sudo apt-get install libgnome-keyring-dev
+
+
+#### Install libssl-dev
+
+    sudo apt-get install libssl-dev
+
+
+#### Install Android SDK
+
+Download Android SDK from 
+
+http://developer.android.com/sdk/index.html
+
+Install API Level 10.
+
+Then set the environment variable
+
+    export ANDROID_HOME=/path/to/your/Android/SDK
+
+
+#### Get Anode source code
+
+In a seperate folder put latest Anode source code.
+
+    git clone https://github.com/paddybyers/anode
+
+Then set the environment variable
+
+    export ANODE_ROOT=/path/to/your/Anode
+
+
+### Get webinos-android source code
+
+If you are reading this file, you may already have got the webinos-android source code or, this file is shown on some web page. You can get the source code from GitHub.
+
+    git clone https://github.com/webinos/webinos-android
+
+
+### Build webinos-android
+
+webinos-android is structured as a 2-level package: npm level and Android project level. To build the apk, go to the top level webinos-android
+
+    cd webinos-android
+    
+Then execute
+
+    npm install
+    ant
+
+If successful the default debug target is generated as
+
+webinos-android/bin/webinos-debug.apk
+
+

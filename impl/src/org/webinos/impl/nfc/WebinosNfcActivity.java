@@ -22,7 +22,7 @@ package org.webinos.impl.nfc;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.webinos.app.R;
+import org.webinos.android.R;
 import org.webinos.impl.nfc.NfcManager.NfcDiscoveryFilter;
 import org.webinos.impl.nfc.NfcManager.NfcDiscoveryFilter.FilterType;
 

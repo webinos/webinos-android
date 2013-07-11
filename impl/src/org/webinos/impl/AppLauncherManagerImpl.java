@@ -41,7 +41,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.net.Uri;
-import org.webinos.app.R;
+import org.webinos.android.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -91,7 +91,7 @@ public class AppLauncherManagerImpl extends AppLauncherManager implements
 		// widget launching...
 		else {
 			try {
-				Intent wrtIntent = new Intent("org.webinos.wrt.START");
+				Intent wrtIntent = new Intent("org.webinos.android.wrt.START");
 				wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				// todo: interface the widget manager instead of generating hash
 				// manually

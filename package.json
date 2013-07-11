@@ -1,17 +1,24 @@
-{ "name": "webinos-pzp-android",
-  "version": "0.8.0",
-  "description": "PZP functionality on Android device",
-  "author": "Paddy Byers <paddy.byers@gmail.com>, Ziran Sun <ziran.sun@samsung.com>",  
+{
+  "name": "webinos-android",
+  "version": "0.9.0",
+  "author": "Paddy Byers <paddy.byers@gmail.com>, Ziran Sun <ziran.sun@samsung.com>",
+  "description": "The webinos platform for Android, including PZP and WRT",
+  "contributors": [
+    {
+      "name": "Wei Guo",
+      "email": "wei6.guo@partner.samsung.com"
+    }
+  ],
   "homepage": "http://www.webinos.org",
   "bugs": "http://jira.webinos.org",
-  "repositories": 
-   { "type": "git",
-     "url": "git://github.com/webinos/webinos-pzp-android.git"
-   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/webinos/webinos-android.git"
+  },
   "directories": {
   },
   "dependencies":{
-    "webinos-pzp"   : "git://github.com/webinos/webinos-pzp.git",
-    "webinos-widget"   : "git://github.com/webinos/webinos-widget.git"
+    "webinos-pzp": "git://github.com/webinos/webinos-pzp.git",
+    "webinos-widget": "git://github.com/webinos/webinos-widget.git"
   }
 }
