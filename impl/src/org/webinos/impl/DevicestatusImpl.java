@@ -131,7 +131,7 @@ public class DevicestatusImpl extends DevicestatusManager implements IModule {
         public void run() {
           Toast.makeText(
             androidContext,
-            "Turn on WiFi in orser to get WiFi status",
+            "Turn on Wi-Fi to get Wi-Fi status",
             Toast.LENGTH_LONG).show();
         }
       });
