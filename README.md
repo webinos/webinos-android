@@ -113,12 +113,24 @@ If you are reading this file, you may already have got the webinos-android sourc
     git clone https://github.com/webinos/webinos-android
 
 
-### Build webinos-android
+### Adding additional webinos API modules
 
-webinos-android is structured as a 2-level package: npm level and Android project level. To build the apk, go to the top level webinos-android
+webinos-android is structured as a 2-level package: npm level and Android project level. To add support for various APIs do the following:
 
     cd webinos-android
-    
+    npm install
+    cd node_modules/webinos-pzp
+    npm install https://github.com/webinos/webinos-api-{APINAME}/tarball/master
+    cd ../..
+
+Where {APINAME} is one of the API implementations available from the webinos github account.
+
+### Build webinos-android
+
+To build the apk, go to the top level webinos-android
+
+    cd webinos-android
+
 Then execute
 
     npm install
