@@ -1,56 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="webinos" default="debug" basedir="./">
+<project name="webinos" default="help">
 
-    <!-- ANDROID_HOME and ANODE_ROOT environment variables must be defined -->
+    <property environment="env"/>
 
-    <target name="gen-webinos"> 	
-        <!-- delete compiled node addons that were built for pc arch -->
-        <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node"/>
-        <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
-        <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node"/>
-        <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/promptMan.node"/>
+    <!-- The local.properties file is created and updated by the 'android' tool.
+         It contains the path to the SDK. It should *NOT* be checked into
+         Version Control Systems. -->
+    <property file="local.properties" />
 
-        <!-- Creates webinos-android/assets/webinos.zip -->
-        <zip destfile="${basedir}/webinos-android/assets/modules/webinos.zip">
-            <zipfileset dir="${basedir}"
-                includes="
-                    node_modules/webinos-pzp/,
-                    node_modules/webinos-widget/"
-                excludes="
-                    **/build/,
-                    **/deps/,
-                    **/.gitignore"/>
-        </zip>
+    <!-- The ant.properties file can be created by you. It is only edited by the
+         'android' tool to add properties to it.
+         This is the place to change some Ant specific build properties.
+         Here are some properties you may want to change/update:
 
-        <!-- Copies webinos/web_root/webinos.js to folder
-            webinos-android/assets -->
-        <copy file="${basedir}/node_modules/webinos-pzp/web_root/webinos.js"
-              todir="${basedir}/webinos-android/assets/js"/>
+         source.dir
+             The name of the source directory. Default is 'src'.
+         out.dir
+             The name of the output directory. Default is 'bin'.
+
+         For other overridable properties, look at the beginning of the rules
+         files in the SDK, at tools/ant/build.xml
+
+         Properties related to the SDK location or the project target should
+         be updated using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems.
+
+         -->
+    <property file="ant.properties" />
+
+    <!-- The project.properties file is created and updated by the 'android'
+         tool, as well as ADT.
+
+         This contains project specific properties such as project target, and library
+         dependencies. Lower level build properties are stored in ant.properties
+         (or in .classpath for Eclipse projects).
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems. -->
+    <loadproperties srcFile="project.properties" />
+
+    <!-- quick check on sdk.dir -->
+    <fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through an env var"
+            unless="sdk.dir"
+    />
+
+
+<!-- extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets -->
+<!--
+    <target name="-pre-build">
+    </target>
+    <target name="-pre-compile">
     </target>
 
-    <target name="gen-webinos-clean">
-        <!-- Removes webinos-android/assets/webinos.zip -->
-        <delete file="${basedir}/webinos-android/assets/modules/webinos.zip"/>
-        <!-- Removes webinos-android/assets/js/webinos.js -->
-        <delete file="${basedir}/webinos-android/assets/js/webinos.js"/>
+    /* This is typically used for code obfuscation.
+       Compiled code location: ${out.classes.absolute.dir}
+       If this is not done in place, override ${out.dex.input.absolute.dir} */
+    <target name="-post-compile">
     </target>
+-->
 
-    <target name="debug" depends="gen-webinos">
-        <!-- Builds webinos-android/bin/webinos-debug.apk
-            Can be installed with the command:
-            adb install webinos-android/bin/webinos-debug.apk -->
-        <ant dir="${basedir}/webinos-android" target="debug"/>
-    </target>
+    <import file="custom_rules.xml" optional="true" />
 
-    <target name="release" depends="gen-webinos">
-        <!-- Builds webinos-android/bin/webinos-release.apk
-            Can be installed with the command:
-            adb install webinos-android/bin/webinos-release.apk -->
-        <ant dir="${basedir}/webinos-android" target="release"/>
-    </target>
+    <!-- Import the actual build file.
 
-    <target name="clean" depends="gen-webinos-clean">
-        <!-- cleans webinos-android/bin/webinos-*.apk -->
-        <ant dir="${basedir}/webinos-android" target="clean"/>
-    </target>
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <import> task.
+             - customize it to your needs.
+         - Customize the whole content of build.xml
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, replacing the <import> task.
+             - customize to your needs.
+
+         ***********************
+         ****** IMPORTANT ******
+         ***********************
+         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         in order to avoid having your file be overridden by tools such as "android update project"
+    -->
+    <!-- version-tag: 1 -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+
 </project>
