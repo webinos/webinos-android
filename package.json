@@ -18,7 +18,7 @@
   "directories": {
   },
   "dependencies":{
-    "webinos-pzp": "git://github.com/webinos/webinos-pzp.git",
-    "webinos-widget": "git://github.com/webinos/webinos-widget.git"
+    "webinos-pzp": "https://github.com/webinos/webinos-pzp",
+    "webinos-widget": "https://github.com/webinos/webinos-widget"
   }
 }
