@@ -21,11 +21,6 @@
                     **/deps/,
                     **/.gitignore"/>
         </zip>
-
-        <!-- Copies webinos/web_root/webinos.js to folder
-            webinos-android/assets -->
-        <copy file="${basedir}/node_modules/webinos-pzp/web_root/webinos.js"
-              todir="${basedir}/webinos-android/assets/js"/>
     </target>
 
     <target name="gen-webinos-clean">
