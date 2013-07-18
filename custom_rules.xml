@@ -4,7 +4,7 @@
     <!-- ANDROID_HOME and ANODE_ROOT environment variables must be defined -->
 
     <target name="-pre-build">
-        <!-- delete compiled node addons that were built for pc arch -->
+        <!-- Delete compiled node addons that were built for pc arch -->
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node"/>
@@ -21,9 +21,6 @@
                     **/deps/,
                     **/.gitignore"/>
         </zip>
-
-        <copy file="node_modules/webinos-pzp/web_root/webinos.js"
-              todir="assets/js"/>
     </target>
 
     <target name="-pre-clean">
