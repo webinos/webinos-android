@@ -108,24 +108,42 @@ Then set the environment variable
 
 ### Get webinos-android source code
 
-If you are reading this file, you may already have got the webinos-android source code or, this file is shown on some web page. You can get the source code from GitHub.
+You can get the source code from GitHub.
 
     git clone https://github.com/webinos/webinos-android
 
 
 ### Build webinos-android
 
-webinos-android is structured as a 2-level package: npm level and Android project level. To build the apk, go to the top level webinos-android
+webinos-android is an Android application project with npm package management. To build the apk, go to the top level directory
 
     cd webinos-android
     
 Then execute
 
     npm install
-    ant
+    ant debug
 
-If successful the default debug target is generated as
+If successful the debug target is generated as
 
-webinos-android/bin/webinos-debug.apk
+bin/webinos-debug.apk
+
+
+### Add API modules
+
+You may find a seriers of webinos API modules here:
+
+https://github.com/webinos
+
+The API repository name takes a form of 'webinos-api-{NAME}'. To add an API, under the top level directory
+
+    cd node_modules/webinos-pzp
+    npm install https://github.com/webinos/webinos-api-{NAME}/tarball/master
+
+Then build again
+
+    cd ../..
+    npm install
+    ant debug
 
 
