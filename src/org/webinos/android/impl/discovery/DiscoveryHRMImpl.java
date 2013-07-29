@@ -84,10 +84,10 @@ public class DiscoveryHRMImpl extends DiscoveryManager implements IModule {
     {
         if(D) Log.v(TAG, "DiscoveryHRMImpl: findservices");
 
-		if(serviceType == null) {
-		Log.e(TAG, "DiscoveryHRMImpl: Please specify a serviceType");
-		return null;
-		} 
+      if(serviceType == null) {
+    	  Log.e(TAG, "DiscoveryHRMImpl: Please specify a serviceType");
+    	  return null;
+      } 
 		
 		//Check on Bluetooth availability
         mBluetoothAdapter = getDefaultBluetoothAdapter();
@@ -155,50 +155,30 @@ public class DiscoveryHRMImpl extends DiscoveryManager implements IModule {
 	/*****************************
 	 * Helpers
 	 *****************************/
-	
 	private static BluetoothAdapter getDefaultBluetoothAdapter() {
-		// Check if the calling thread is the main application thread,
-		// if it is, do it directly. 
-		if (Thread.currentThread().equals(Looper.getMainLooper().getThread())) {
-			Log.v(TAG, "main thread - get bluetooth");
-			return BluetoothAdapter.getDefaultAdapter();
-		}
-		
-		// If the calling thread, isn't the main application thread,
-		// then get the main application thread to return the default adapter.
 		final ArrayList<BluetoothAdapter> adapters = new ArrayList<BluetoothAdapter>(1);
-		final Object mutex = new Object();
-		final Handler handler = new Handler(Looper.getMainLooper());
-		
-		handler.post(new Runnable() {
-		    @Override
-		    public void run() {
-		        Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
-		            public boolean queueIdle() {
-		                adapters.add(BluetoothAdapter.getDefaultAdapter());
-		                synchronized (mutex) {
-		                    mutex.notify();
-		                }
-		                return false;
-		            }
-		        });
-		    }
-		}); 
-		
-		while (adapters.isEmpty()) {
-			Log.d(TAG, "wait for adapter");
-				
-			synchronized (mutex) {
-				try {
-					mutex.wait(1000L);
-				} catch (InterruptedException e) {
-					Log.e(TAG, "Interrupted while waiting for default bluetooth adapter", e);
+		if(adapters.isEmpty()) {
+			final boolean[] ok = new boolean[] { false };
+			Thread t = new Thread() {
+				public void run() {
+					Looper.prepare();
+					adapters.add(BluetoothAdapter.getDefaultAdapter());
+	            
+					synchronized (ok) {
+						ok[0]=true;
+						ok.notify();
+					}
+					Looper.loop();
+				};
+			};
+			t.start();
+			synchronized (ok) {
+				if (ok[0]==false) {
+					try {
+						ok.wait();
+					} catch (InterruptedException e) {}
 				}
 			}
-		}
-		    
-		if (adapters.get(0) == null) {
-			 Log.e(TAG, "No bluetooth adapter found!");
 		}
 		return adapters.get(0);
 	}
