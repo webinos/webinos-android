@@ -1,11 +1,13 @@
 # webinos-android
 
-The webinos platform for Android, including PZP and WRT, based on Anode.
+The webinos platform for Android, including an imported PZP and WRT, based on Anode.
 
 
 ## Release notes
 
 webinos v0.9.0 for Android for test.
+
+It supports Android 3.x and above.
 
 
 ## webinos dependencies
@@ -88,7 +90,7 @@ Download Android SDK from
 
 http://developer.android.com/sdk/index.html
 
-Install API Level 10.
+Install API Level 11.
 
 Then set the environment variable
 
@@ -131,11 +133,11 @@ bin/webinos-debug.apk
 
 ### Add API modules
 
-You may find a seriers of webinos API modules here:
+You may find a series of webinos API modules here:
 
 https://github.com/webinos
 
-The API repository name takes a form of 'webinos-api-{NAME}'. To add an API, under the top level directory
+An API repository name takes a form of 'webinos-api-{NAME}', except for webinos-api-specifications which is not API implementation. To add an API, under the top level directory
 
     cd node_modules/webinos-pzp
     npm install https://github.com/webinos/webinos-api-{NAME}/tarball/master
