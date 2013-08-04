@@ -131,21 +131,3 @@ If successful the debug target is generated as
 bin/webinos-debug.apk
 
 
-### Add API modules
-
-You may find a series of webinos API modules here:
-
-https://github.com/webinos
-
-An API repository name takes a form of 'webinos-api-{NAME}', except for webinos-api-specifications which is not API implementation. To add an API, under the top level directory
-
-    cd node_modules/webinos-pzp
-    npm install https://github.com/webinos/webinos-api-{NAME}/tarball/master
-
-Then build again
-
-    cd ../..
-    npm install
-    ant debug
-
-
