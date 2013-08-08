@@ -11,13 +11,15 @@
   ],
   "homepage": "http://www.webinos.org",
   "bugs": "http://jira.webinos.org",
+  "scripts": {
+    "postinstall": "bash ./install_apis.sh"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/webinos/webinos-android.git"
   },
-  "directories": {
-  },
-  "dependencies":{
+  "directories": {},
+  "dependencies": {
     "webinos-pzp": "git://github.com/webinos/webinos-pzp.git",
     "webinos-widget": "git://github.com/webinos/webinos-widget.git"
   }
