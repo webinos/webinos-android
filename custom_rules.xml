@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="imported">
 
-    <!-- ANDROID_HOME and ANODE_ROOT environment variables must be defined -->
+    <!-- ANDROID_HOME environment variable must be defined -->
 
     <target name="-pre-build">
+        <!-- npm install -->
+        <exec dir="." executable="npm" os="Linux">
+            <arg line="install"/>
+        </exec>
+        
+        <!-- Get Anode source -->
+        <available file="src/anode" type="dir" property="anode.got"/>
+        <if>
+            <condition><isset property="anode.got"/></condition>
+            <then>
+                <echo>Pull Anode latest master...</echo>
+                <exec dir="src/anode" executable="git" os="Linux">
+                    <arg line="pull"/>
+                </exec>
+            </then>
+            <else>
+                <exec dir="src" executable="git" os="Linux">
+                    <arg line="clone https://github.com/paddybyers/anode"/>
+                </exec>
+            </else>
+        </if>
+
         <!-- Delete compiled node addons that were built for pc arch -->
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
