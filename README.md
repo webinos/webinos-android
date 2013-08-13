@@ -23,7 +23,7 @@ Our recommended build environment is 32-bit Ubuntu 12.04 or above. If you are us
 
     sudo apt-get install ia32-libs
 
-Other Unix-like systems or emulated Unix-like environments are not fully tested but should work fine, maybe with some twistings. 
+Other Linux distributions or emulated Linux environments are not fully tested but should work, maybe with some twistings. 
 
 
 ### Prerequisites
@@ -37,7 +37,6 @@ Other Unix-like systems or emulated Unix-like environments are not fully tested 
     * libgnome-keyring-dev
     * libssl-dev
     * Android SDK
-    * Anode
 
 
 #### Install Node
@@ -97,17 +96,6 @@ Then set the environment variable
     export ANDROID_HOME=/path/to/your/Android/SDK
 
 
-#### Get Anode source code
-
-In a seperate folder put latest Anode source code.
-
-    git clone https://github.com/paddybyers/anode
-
-Then set the environment variable
-
-    export ANODE_ROOT=/path/to/your/Anode
-
-
 ### Get webinos-android source code
 
 You can get the source code from GitHub.
@@ -117,17 +105,13 @@ You can get the source code from GitHub.
 
 ### Build webinos-android
 
-webinos-android is an Android application project with npm package management. To build the apk, go to the top level directory
+webinos-android is an Android application project with npm package management. To build a debug installer, execute
 
     cd webinos-android
-    
-Then execute
+    ant clean debug
 
-    npm install
-    ant debug
+If successful the target is generated as
 
-If successful the debug target is generated as
-
-bin/webinos-debug.apk
+bin/webinos-android-debug.apk
 
 
