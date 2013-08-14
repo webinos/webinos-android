@@ -10,17 +10,17 @@
         </exec>
         
         <!-- Get Anode source -->
-        <available file="src/anode" type="dir" property="anode.got"/>
+        <available file="libs/anode" type="dir" property="anode.got"/>
         <if>
             <condition><isset property="anode.got"/></condition>
             <then>
                 <echo>Pull Anode latest master...</echo>
-                <exec dir="src/anode" executable="git" os="Linux">
+                <exec dir="libs/anode" executable="git" os="Linux">
                     <arg line="pull"/>
                 </exec>
             </then>
             <else>
-                <exec dir="src" executable="git" os="Linux">
+                <exec dir="libs" executable="git" os="Linux">
                     <arg line="clone https://github.com/paddybyers/anode"/>
                 </exec>
             </else>

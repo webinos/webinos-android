@@ -112,6 +112,6 @@ webinos-android is an Android application project with npm package management. T
 
 If successful the target is generated as
 
-bin/webinos-debug.apk
+bin/webinos-android-debug.apk
 
 
