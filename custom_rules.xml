@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="imported">
-
-    <!-- ANDROID_HOME and ANODE_ROOT environment variables must be defined -->
-
+    
+    <!-- ANDROID_HOME environment variable must be defined -->
+    
+    <target name="anode">
+        <available file="libs/anode" type="dir" property="anode.got"/>
+        <if>
+            <condition><isset property="anode.got"/></condition>
+            <then>
+                <echo>Pull Anode latest master...</echo>
+                <exec dir="libs/anode" executable="git" failonerror="true">
+                    <arg line="pull --rebase"/>
+                </exec>
+            </then>
+            <else>
+                <exec dir="libs" executable="git" failonerror="true">
+                    <arg line="clone https://github.com/paddybyers/anode"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+    
     <target name="-pre-build">
+        <!-- npm install -->
+        <exec dir="." executable="npm" failonerror="true">
+            <arg line="install"/>
+        </exec>
+        
         <!-- Delete compiled node addons that were built for pc arch -->
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/promptMan.node"/>
-
+        
         <!-- Create assets/modules/webinos.zip -->
         <zip destfile="assets/modules/webinos.zip">
             <zipfileset dir="."
@@ -22,10 +45,10 @@
                     **/.gitignore"/>
         </zip>
     </target>
-
+    
     <target name="-pre-clean">
         <delete file="assets/modules/webinos.zip"/>
         <delete file="assets/js/webinos.js"/>
     </target>
-
+    
 </project>
