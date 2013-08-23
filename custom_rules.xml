@@ -23,7 +23,12 @@
     
     <target name="-pre-build">
         <!-- npm install -->
-        <exec dir="." executable="npm" failonerror="true">
+        <exec dir="." executable="cmd" failonerror="true" osfamily="windows">
+            <arg value="/c"/>
+            <arg line="npm.cmd"/>
+            <arg line="install"/>
+        </exec>
+        <exec dir="." executable="npm" failonerror="true" osfamily="unix">
             <arg line="install"/>
         </exec>
         
