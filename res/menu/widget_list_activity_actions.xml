@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 100 places are reseved for runtime added items -->
+    <item android:id="@+id/scan_sd_card"
+          android:title="@string/scan_sd_card"
+          android:showAsAction="ifRoom"
+          android:orderInCategory="101"/>
+    <item android:id="@+id/pzp_settings"
+          android:title="@string/pzp_settings"
+          android:showAsAction="ifRoom"
+          android:orderInCategory="102"/>
+</menu>
