@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +35,7 @@ import org.webinos.android.app.wrt.mgr.WidgetManagerService;
 import org.webinos.android.util.AssetUtils;
 import org.webinos.android.util.ModuleUtils;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -67,15 +69,12 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 	static final String INST = "instance";
 	static final String ID = "id";
 	static final String OPTS = "options";
-
-	static final int SCAN_MENUITEM_ID     = 0;
-	static final int CONTEXT_MENUITEM_ID  = 1;
-	static final int PZP_MENUITEM_ID      = 2;
-	static final int STORES_MENUITEM_BASE = 100;
-	static final int SCANNING_DIALOG      = 0;
-	static final int NO_WIDGETS_DIALOG    = 1;
-	static final int FOUND_WIDGETS_DIALOG = 2;
-
+	
+	private static final int STORES_MENUITEM_BASE     = 100;
+	static final int SCANNING_DIALOG          = 0;
+	static final int NO_WIDGETS_DIALOG        = 1;
+	static final int FOUND_WIDGETS_DIALOG     = 2;
+	
 	private WidgetManagerImpl mgr;
 	private WidgetImportHelper scanner;
 	private Handler asyncRefreshHandler;
@@ -88,7 +87,15 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_widget_list);
-
+		
+		ActionBar actionBar = getActionBar();
+		if(actionBar != null){
+			actionBar.setDisplayShowHomeEnabled(false);
+			actionBar.setDisplayShowTitleEnabled(false);
+		} else {
+			Log.i(TAG, "WidgetListActivity has no action bar.");
+		}
+		
 		registerForContextMenu(getListView());
 		asyncRefreshHandler = new Handler() {
 			@Override
@@ -101,15 +108,17 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 			mgr.addEventListener(this);
 			initList();
 		}
-		/* populate stores array (requires async fetch of icons) */
+		
+		// Populate stores array
 		scanner = new WidgetImportHelper(this);
-		(new AsyncTask<Void, Void, Void>() {
-			@Override
-			protected Void doInBackground(Void... params) {
-				stores = getStores();
-				return null;
-			}}).execute();
-
+		DownloadStoreTask downloadStoreTask = new DownloadStoreTask();
+		downloadStoreTask.execute();
+		try {
+			downloadStoreTask.get(1, TimeUnit.SECONDS);
+		} catch (Throwable t) {
+			Log.i(TAG, "Getting app store information timed out.", t);
+		}
+		
 		synchronized(this) {
 			if(mgr == null) {
 				blocked = true;
@@ -151,49 +160,54 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		String installId = ids[(int)info.id];
 		switch(item.getItemId()) {
-		case R.id.menu_uninstall:
-			Intent intent = new Intent(this, WidgetUninstallActivity.class);
-			intent.putExtra("installId", installId);
-			startActivity(intent);
-			return true;
-		case R.id.menu_check_for_updates:
-			Toast.makeText(this, getString(R.string.not_yet_implemented), Toast.LENGTH_SHORT).show();
-			return true;
-		case R.id.menu_details:
-			Toast.makeText(this, getString(R.string.not_yet_implemented), Toast.LENGTH_SHORT).show();
-			return true;
-		default:
-			return super.onContextItemSelected(item);
+			case R.id.menu_uninstall:
+				Intent intent = new Intent(this, WidgetUninstallActivity.class);
+				intent.putExtra("installId", installId);
+				startActivity(intent);
+				return true;
+			case R.id.menu_check_for_updates:
+				Toast.makeText(this, getString(R.string.not_yet_implemented), Toast.LENGTH_SHORT).show();
+				return true;
+			case R.id.menu_details:
+				Toast.makeText(this, getString(R.string.not_yet_implemented), Toast.LENGTH_SHORT).show();
+				return true;
+			default:
+				return super.onContextItemSelected(item);
 		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.setQwertyMode(true);
-		menu.add(0, SCAN_MENUITEM_ID, 0, getString(R.string.scan_sd_card));
-		menu.add(0, PZP_MENUITEM_ID, 0, getString(R.string.pzp_settings));
-		/* add any configured stores to the menu */
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.widget_list_activity_actions, menu);
+		
 		if(stores != null) {
 			for(int i = 0; i < stores.length; i++) {
 				Store store = stores[i];
-				menu.add(1, STORES_MENUITEM_BASE + i, 0, store.name).setIcon(store.icon);
+				menu.add(Menu.NONE, STORES_MENUITEM_BASE + i, i+1, store.name)
+					.setIcon(store.icon)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 			}
+		} else {
+			Log.i(TAG, "Unable to add app store");
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		if(itemId == SCAN_MENUITEM_ID) {
-			scanner.scan();
-			return true;
+		// Handle presses on the action bar items
+		switch (itemId) {
+			case R.id.scan_sd_card:
+				scanner.scan();
+				return true;
+			case R.id.pzp_settings:
+				startActivity(new Intent(this, ConfigActivity.class));
+				return true;
 		}
-		if(itemId == PZP_MENUITEM_ID) {
-			startActivity(new Intent(this, ConfigActivity.class));
-			return true;
-		}
+		
 		if(itemId >= STORES_MENUITEM_BASE) {
 			Store store = stores[itemId - STORES_MENUITEM_BASE];
 			if(store != null && store.location != null) {
@@ -204,23 +218,13 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 					getApplicationContext().startActivity(storeIntent);
 					return true;
 				} catch(Throwable t) {
-					Log.e(TAG, "Unable to launch store", t);
+					Log.e(TAG, "Unable to launch app store", t);
 				}
 			}
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		String item = (String) getListAdapter().getItem(position);
-		Context ctx = getApplicationContext();
-		Intent wrtIntent = new Intent(ACTION_START);
-		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
-		wrtIntent.putExtra(ID, item);
-		ctx.startActivity(wrtIntent);
-	}
-
+	
 	public void onLaunch(final WidgetManagerImpl mgr) {
 		synchronized(this) {
 			if(blocked)
@@ -238,13 +242,7 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 		mgr.addEventListener(this);
 		asyncRefreshHandler.sendEmptyMessage(0);
 	}
-
-	private void initList() {
-		ids = mgr.getInstalledWidgets();
-		setListAdapter(new WidgetListAdapter(this, ids));
-		((TextView)findViewById(android.R.id.empty)).setText(getString(R.string.no_apps_installed));
-	}
-
+	
 	@Override
 	public Dialog onCreateDialog(int id) {
 		Dialog result = scanner.createDialog(id);
@@ -252,22 +250,46 @@ public class WidgetListActivity extends ListActivity implements WidgetManagerSer
 			result = super.onCreateDialog(id);
 		return result;
 	}
-
+	
 	@Override
 	public void onPrepareDialog(int id, Dialog dialog) {
 		scanner.onPrepareDialog(id, dialog);
 		super.onPrepareDialog(id, dialog);
 	}
-
+	
 	@Override
 	public void onWidgetChanged(String installId, int event) {
 		asyncRefreshHandler.sendEmptyMessage(0);
 	}
-
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		String item = (String) getListAdapter().getItem(position);
+		Context ctx = getApplicationContext();
+		Intent wrtIntent = new Intent(ACTION_START);
+		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+		wrtIntent.putExtra(ID, item);
+		ctx.startActivity(wrtIntent);
+	}
+	
+	private void initList() {
+		ids = mgr.getInstalledWidgets();
+		setListAdapter(new WidgetListAdapter(this, ids));
+		((TextView)findViewById(android.R.id.empty)).setText(getString(R.string.no_apps_installed));
+	}
+	
 	/********************
 	 * Store handling
 	 ********************/
-
+	
+	private class DownloadStoreTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			stores = getStores();
+			return null;
+		}
+	}	
+	
 	private static class Store {
 		String name;
 		String description;
