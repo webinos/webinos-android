@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">webinos</string>
     <string name="pzp_activity_name">PZP</string>
-    <string name="initialising_runtime">Initialising Webinos Runtime</string>
+    <string name="initialising_runtime">Initialising webinos runtime</string>
     <string name="arguments">Arguments</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
@@ -40,8 +40,8 @@
     <string name="scan_sd_card">Scan SD card</string>
     <string name="pzp_settings">Settings</string>
     <string name="not_yet_implemented">Not yet implemented</string>
-    <string name="no_apps_installed">No applications installed</string>
-    <string name="loading_apps">Loading applications</string>
+    <string name="no_apps_installed">No webinos applications installed</string>
+    <string name="loading_apps">Loading applications&#8230;</string>
     
     <string name="wrt_receiver">WRT renderer intent receiver</string>
     <string name="wrt_receiver_description">An intent receiver that controls intents relating to WRT renderer lifecycle</string>
