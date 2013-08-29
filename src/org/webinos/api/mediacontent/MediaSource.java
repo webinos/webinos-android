@@ -16,4 +16,6 @@ public abstract class MediaSource extends Base {
   public abstract void findItems(MediaItemSuccessCallback successCallback,
       MediaContentErrorCallback errorCallback, String folderId,
       FilterValues filter, SortMode sortMode, long count, long offset);
+
+  public abstract void getThumb(long id, ThumbnailCallback callback);
 }
