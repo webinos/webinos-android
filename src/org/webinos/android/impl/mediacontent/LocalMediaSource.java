@@ -1,5 +1,6 @@
 package org.webinos.android.impl.mediacontent;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.webinos.android.impl.mediacontent.Mapping.CompositeDbField;
+import org.webinos.android.impl.mediacontent.Mapping.DbField;
+import org.webinos.android.impl.mediacontent.Mapping.SingleDbField;
 import org.webinos.api.DeviceAPIError;
 import org.webinos.api.mediacontent.FilterValues;
 import org.webinos.api.mediacontent.MediaAudio;
@@ -20,13 +24,13 @@ import org.webinos.api.mediacontent.MediaItemSuccessCallback;
 import org.webinos.api.mediacontent.MediaSource;
 import org.webinos.api.mediacontent.MediaVideo;
 import org.webinos.api.mediacontent.SortMode;
-import org.webinos.android.impl.mediacontent.Mapping.CompositeDbField;
-import org.webinos.android.impl.mediacontent.Mapping.DbField;
-import org.webinos.android.impl.mediacontent.Mapping.SingleDbField;
+import org.webinos.api.mediacontent.ThumbnailCallback;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -229,6 +233,7 @@ public class LocalMediaSource extends MediaSource {
 
     @Override
     public void run() {
+      Cursor cursor = null;
       try {
         String[] projection = Mapping.getProjection();
 
@@ -265,7 +270,7 @@ public class LocalMediaSource extends MediaSource {
         List<MediaItem> mediaItems = new ArrayList<MediaItem>();
 
         Map<String, Object> valueSet = new HashMap<String, Object>();
-        Cursor cursor = contentResolver.query(contentUri, projection, selection, selectionArgs,
+        cursor = contentResolver.query(contentUri, projection, selection, selectionArgs,
             sortOrder);
         while (cursor.moveToNext()) {
 
@@ -333,6 +338,10 @@ public class LocalMediaSource extends MediaSource {
         if (errorCallback != null) {
           errorCallback.onError(e.toString());
         }
+      } finally {
+        if (cursor != null) {
+          cursor.close();
+        }
       }
     }
   }
@@ -345,6 +354,41 @@ public class LocalMediaSource extends MediaSource {
     FindItemsOperation op = new FindItemsOperation(successCallback,
         errorCallback, folderId, AbstractFilter.getFilter(filterValues),
         sortMode, 2, 0);
+    new Thread(op).start();
+  }
+
+  private class GetThumbOperation implements Runnable {
+    private ContentResolver contentResolver;
+    private long id;
+    private ThumbnailCallback callback;
+
+    public GetThumbOperation(ContentResolver contentResolver, long id, ThumbnailCallback callback) {
+      this.contentResolver = contentResolver;
+      this.id = id;
+      this.callback = callback;
+    }
+
+    @Override
+    public void run() {
+      BitmapFactory.Options options=new BitmapFactory.Options();
+      options.inSampleSize = 1;
+      Bitmap curThumb = MediaStore.Images.Thumbnails.getThumbnail(contentResolver, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+
+      if (curThumb == null) {
+        callback.onSuccess(true, null);
+        return;
+      }
+
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      boolean isCompressed = curThumb.compress(Bitmap.CompressFormat.JPEG, 80, out);
+      byte[] bytes = out.toByteArray();
+      callback.onSuccess(!isCompressed, bytes);
+    }
+  }
+
+  @Override
+  public void getThumb(final long id, final ThumbnailCallback callback) {
+    GetThumbOperation op = new GetThumbOperation(this.ctx.getContentResolver(), id, callback);
     new Thread(op).start();
   }
 }
