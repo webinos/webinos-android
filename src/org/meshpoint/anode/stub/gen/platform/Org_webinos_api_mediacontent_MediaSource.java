@@ -28,6 +28,12 @@ public class Org_webinos_api_mediacontent_MediaSource {
 				(org.webinos.api.mediacontent.MediaContentErrorCallback)args[1]
 			);
 			break;
+		case 2: /* getThumb */
+			inst.getThumb(
+				((org.meshpoint.anode.js.JSValue)args[0]).longValue,
+				(org.webinos.api.mediacontent.ThumbnailCallback)args[1]
+			);
+			break;
 		default:
 		}
 		return result;
