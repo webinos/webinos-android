@@ -93,6 +93,12 @@
 
     <target name="webinos-zip">
         <delete file="assets/modules/webinos.zip"/>
+        
+        <!-- HTTP provider: create the app installation directory -->
+        <mkdir dir="node_modules/webinos-pzp/web_root/apps"/>
+        <touch file="node_modules/webinos-pzp/web_root/apps/.installdir"/>
+        
+        <!-- Create assets/modules/webinos.zip -->
         <zip destfile="assets/modules/webinos.zip">
             <zipfileset dir="."
                 includes="
