@@ -66,6 +66,7 @@ public class WidgetListActivity extends ListActivity
 	private static final String STORES_FILE = "config/stores.json";
 	private static final String ACTION_PROGRESS = "org.webinos.android.app.wrt.ui.PROGRESS";
 	private static final String ACTION_PZP_NOTIFICATION = "org.webinos.pzp.notification.response";
+	static final String CONTENTSHELLSTART = "org.webinos.android.wrt.ui.ContentShellActivity";
 	static final String ACTION_START = "org.webinos.android.wrt.START";
 	static final String ACTION_STOP = "org.webinos.android.wrt.STOP";
 	static final String ACTION_STOPALL = "org.webinos.android.wrt.STOPALL";
@@ -297,9 +298,8 @@ public class WidgetListActivity extends ListActivity
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		String item = (String) getListAdapter().getItem(position);
 		Context ctx = getApplicationContext();
-		Intent wrtIntent = new Intent(ACTION_START);
-		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			/* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+		Intent wrtIntent = new Intent(CONTENTSHELLSTART); //Alternate WRT, Android webview: new Intent(ACTION_START);
+		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
 		wrtIntent.putExtra(ID, item);
 		ctx.startActivity(wrtIntent);
 	}
