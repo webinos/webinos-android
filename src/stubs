@@ -146,4 +146,7 @@ org.webinos.api.mediacontent.MediaSourceManager
 org.webinos.api.mediacontent.MediaContentErrorCallback
 org.webinos.api.mediacontent.MediaFolderSuccessCallback
 org.webinos.api.mediacontent.MediaItemSuccessCallback
+org.webinos.api.mediacontent.ThumbnailCallback
+org.webinos.api.media.PlaybackManager
+org.webinos.api.media.MediaCallback
 
