@@ -69,6 +69,8 @@ public class ContentShellActivity extends ChromiumActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        Log.i(TAG, "onCreate:");
 
         // Initializing the command line must occur before loading the library.
         if (!CommandLine.isInitialized()) {
@@ -180,6 +182,8 @@ public class ContentShellActivity extends ChromiumActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+    	
+    	Log.i(TAG, "onNewIntent:");
         if (getCommandLineParamsFromIntent(intent) != null) {
             Log.i(TAG, "Ignoring command line params: can only be set when creating the activity.");
         }
@@ -195,6 +199,7 @@ public class ContentShellActivity extends ChromiumActivity {
         String url = getUrlFromIntent(intent);
         if (!TextUtils.isEmpty(url)) {
             Shell activeView = getActiveShell();
+            
             if (activeView != null) {
                 activeView.loadUrl(url);
             }
@@ -203,6 +208,8 @@ public class ContentShellActivity extends ChromiumActivity {
 
     @Override
     protected void onPause() {
+    	
+    	 Log.i(TAG, "onPause:");
         ContentView view = getActiveContentView();
         if (view != null) view.onActivityPause();
 
@@ -214,6 +221,8 @@ public class ContentShellActivity extends ChromiumActivity {
     protected void onResume() {
         super.onResume();
 
+        Log.i(TAG, "onResume:");
+        
         ContentView view = getActiveContentView();
         if (view != null) view.onActivityResume();
         IntentFilter intentFilter = new IntentFilter(ACTION_START_TRACE);
@@ -241,12 +250,14 @@ public class ContentShellActivity extends ChromiumActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	Log.i(TAG, "onActivityResult:");
         super.onActivityResult(requestCode, resultCode, data);
         mWindowAndroid.onActivityResult(requestCode, resultCode, data);
     }
 
     private static String getUrlFromIntent(Intent intent) {
-        return intent != null ? intent.getDataString() : null;
+    	Log.i(TAG, "Extra:"+intent.getExtras().get("id"));
+        return (String) (intent != null ? intent.getExtras().get("id") : null);
     }
 
     private static String[] getCommandLineParamsFromIntent(Intent intent) {

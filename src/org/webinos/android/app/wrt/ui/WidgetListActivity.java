@@ -300,7 +300,7 @@ public class WidgetListActivity extends ListActivity
 		Context ctx = getApplicationContext();
 		Intent wrtIntent = new Intent(CONTENTSHELLSTART); //Alternate WRT, Android webview: new Intent(ACTION_START);
 		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
-		wrtIntent.putExtra(ID, item);
+		wrtIntent.putExtra(ID, "http://localhost:8080/apps/"+item+"/wgt/index.html");
 		ctx.startActivity(wrtIntent);
 	}
 
