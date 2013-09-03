@@ -236,6 +236,7 @@ public class PlatformInit extends Service {
 				for(String module : modules) {
 					Log.v(TAG, "Checking module: " + module);
 					checkModule(module, force);
+					sendBroadcast(new Intent("org.webinos.android.app.wrt.ui.PROGRESS"));
 				}
 			}
 		} catch (IOException e) {
