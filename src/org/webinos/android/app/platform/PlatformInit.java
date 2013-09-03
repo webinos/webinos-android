@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.webinos.android.R;
 import org.webinos.android.app.pzp.PzpService;
+import org.webinos.android.app.wrt.ui.WidgetListActivity;
 import org.webinos.android.util.AssetUtils;
 import org.webinos.android.util.ModuleUtils;
 import org.webinos.android.util.ModuleUtils.ModuleType;
@@ -234,6 +235,9 @@ public class PlatformInit extends Service {
 			String[] modules = mgr.list(MODULE_PATH);
 			if (modules != null) {
 				for(String module : modules) {
+					
+					WidgetListActivity.onProgress(1);
+					
 					Log.v(TAG, "Checking module: " + module);
 					checkModule(module, force);
 				}

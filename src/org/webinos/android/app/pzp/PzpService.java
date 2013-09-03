@@ -17,6 +17,7 @@ import org.meshpoint.anode.Runtime.StateListener;
 import org.webinos.android.app.anode.AnodeService;
 import org.webinos.android.app.platform.Config;
 import org.webinos.android.app.platform.PlatformInit;
+import org.webinos.android.app.wrt.ui.WidgetListActivity;
 
 import android.app.Service;
 import android.content.Context;
@@ -215,8 +216,10 @@ public class PzpService extends Service implements StateListener {
 
 	public void startPzp() {
 		String cmd = configParams.getCmd();
+		
 		Log.v(TAG, "PZP start: starting with cmd: " + cmd);
-
+		WidgetListActivity.onProgress(1);
+		
 		try {
 			Runtime.initRuntime(this, new String[]{});
 			isolate = Runtime.createIsolate();
