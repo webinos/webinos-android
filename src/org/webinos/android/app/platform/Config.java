@@ -27,6 +27,8 @@ import java.util.Properties;
 import android.content.Context;
 import android.util.Log;
 
+import org.webinos.android.app.wrt.ui.WidgetListActivity;
+
 public class Config extends Properties {
 	private static final long serialVersionUID = -8197098352324968523L;
 	private static Config theConfig;
@@ -44,6 +46,9 @@ public class Config extends Properties {
 	
 	private Config(Context ctx) {
 		InputStream is = null;
+		
+		WidgetListActivity.onProgress(1);
+		
 		try {
 			Log.v(TAG, "Attempting to load config file from assets");
 			load(is = ctx.getAssets().open(CONFIG_FILE));
