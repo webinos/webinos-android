@@ -25,7 +25,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class PzpService extends Service implements StateListener {
-
 	private static final String TAG = PzpService.class.getCanonicalName();
 
 	/**
@@ -70,7 +69,7 @@ public class PzpService extends Service implements StateListener {
 
 	/**
 	 * Get the service instance, registering a callback for the case that
-	 * the service is not currently avaiable. If not available, the service
+	 * the service is not currently available. If not available, the service
 	 * will be started.
 	 * @param ctx a context to use to start the service if required.
 	 * @param listener a listener to call with the service instance, in the case that
@@ -91,7 +90,7 @@ public class PzpService extends Service implements StateListener {
 		/* start service if necessary */
 		if(foundService == null) {
 			ctx.startService(new Intent(ctx, PzpService.class));
-		} else if(listener != null){
+		} else if(listener != null) {
 			listener.onServiceAvailable(foundService);
 		}
 	}
@@ -114,8 +113,8 @@ public class PzpService extends Service implements StateListener {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		/* if the platform is not yet initialised, wait until that
-		 * has completed and retry */
+		/* if the platform is not yet initialised, wait until that has
+		 * completed and retry */
 		if(PlatformInit.onInit(this, new Runnable() {
 			@Override
 			public void run() {
@@ -132,7 +131,7 @@ public class PzpService extends Service implements StateListener {
 		/* init config */
 		initConfig();
 		/* synchronously set ourselves as the singleton instance, and notify
-		 * and pending listeners */
+		 * any pending listeners */
 		synchronized(PzpService.class) {
 			theService = this;
 			for(PzpServiceListener listener : serviceListeners)
@@ -170,7 +169,7 @@ public class PzpService extends Service implements StateListener {
 				} catch (IOException e) {}
 			}
 		}
-		
+
 		void writeConfig() {
 			BufferedWriter writer = null;
 			try {
@@ -216,13 +215,13 @@ public class PzpService extends Service implements StateListener {
 	public void startPzp() {
 		String cmd = configParams.getCmd();
 		Log.v(TAG, "PZP start: starting with cmd: " + cmd);
-
 		try {
 			Runtime.initRuntime(this, new String[]{});
 			isolate = Runtime.createIsolate();
 			isolate.addStateListener(this);
 			this.instance = AnodeService.addInstance(instance, isolate);
 			isolate.start(cmd.split("\\s"));
+			sendBroadcast(new Intent("org.webinos.android.app.wrt.ui.PROGRESS"));
 		} catch (IllegalStateException e) {
 			Log.v(TAG, "isolate start: exception: " + e + "; cause: " + e.getCause());
 		} catch (NodeException e) {
@@ -271,8 +270,8 @@ public class PzpService extends Service implements StateListener {
 			break;
 		}
 
-		/* synchronously update the state, and get a
-		 * snapshot of the current listeners */
+		/* synchronously update the state, and get a snapshot of the current
+		 * listeners */
 		synchronized(this) {
 			state = updatedState;
 			iterator = stateListeners.toArray(new PzpStateListener[stateListeners.size()]);
@@ -306,5 +305,4 @@ public class PzpService extends Service implements StateListener {
 	public synchronized void removePzpStateListener(PzpStateListener listener) {
 		stateListeners.remove(listener);
 	}
-
 }
