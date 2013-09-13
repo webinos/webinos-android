@@ -3,21 +3,13 @@
   "version": "0.9.0",
   "author": "Paddy Byers <paddy.byers@gmail.com>, Ziran Sun <ziran.sun@samsung.com>",
   "description": "The webinos platform for Android, including PZP and WRT",
-  "contributors": [
-    {
-      "name": "Wei Guo",
-      "email": "wei6.guo@partner.samsung.com"
-    }
-  ],
   "homepage": "http://www.webinos.org",
-  "bugs": "http://jira.webinos.org",
+  "bugs": "http://jira.webinos.org/browse/WP",
   "repository": {
     "type": "git",
     "url": "git://github.com/webinos/webinos-android.git"
   },
-  "directories": {
-  },
-  "dependencies":{
+  "dependencies": {
     "webinos-pzp": "git://github.com/webinos/webinos-pzp.git",
     "webinos-widget": "git://github.com/webinos/webinos-widget.git"
   }
