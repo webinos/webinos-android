@@ -81,10 +81,11 @@
         <activity android:name=".app.wrt.ui.WidgetSettingsActivity"
                   android:label="@string/settings_activity_title"/>
         
-        <activity android:name=".app.wrt.ui.WidgetListActivity" 
-            	  android:label="@string/app_name"
+        <activity android:name=".app.wrt.ui.WidgetListActivity"
+                  android:label="@string/app_name"
                   android:exported="true"
-                  android:enabled="true">
+                  android:enabled="true"
+                  android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
