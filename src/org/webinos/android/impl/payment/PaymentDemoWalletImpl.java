@@ -17,7 +17,7 @@
  *
  ******************************************************************************/
 
-package org.webinos.android.impl;
+package org.webinos.android.impl.payment;
 
 import org.meshpoint.anode.AndroidContext;
 import org.meshpoint.anode.bridge.Env;
@@ -31,6 +31,8 @@ import org.webinos.api.payment.ShoppingItem;
 import android.util.Log;
 
 import android.content.Context;
+
+import org.webinos.android.impl.payment.demowallet.PaymentTransaction;
 
 public class PaymentDemoWalletImpl extends PaymentManager implements IModule {
 	static final String TAG = PaymentDemoWalletImpl.class.getCanonicalName();
@@ -49,7 +51,7 @@ public class PaymentDemoWalletImpl extends PaymentManager implements IModule {
 			final String sellerID) {
 			
 		Log.d(TAG, "Received bill with price " + bill.itemsPrice + " and desc " + bill.description);
-		org.webinos.android.impl.payment.demowallet.PaymentTransaction transaction = new org.webinos.android.impl.payment.demowallet.PaymentTransaction(androidContext, customerID, sellerID, successCallback, errorCallback);
+		PaymentTransaction transaction = new PaymentTransaction(androidContext, customerID, sellerID, successCallback, errorCallback);
 		transaction.perform(itemList, bill);
 	}
 

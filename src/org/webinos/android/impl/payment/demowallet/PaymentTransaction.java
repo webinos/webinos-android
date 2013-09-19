@@ -103,7 +103,7 @@ public class PaymentTransaction {
 		return error;
 	}
 
-	PaymentTransaction(Context ctx, String customerID, String sellerID, PaymentSuccessCB successCallback,
+	public PaymentTransaction(Context ctx, String customerID, String sellerID, PaymentSuccessCB successCallback,
 			PaymentErrorCB errorCallback) {
 		this.context = ctx;
 		this.env = Env.getCurrent();
@@ -113,7 +113,7 @@ public class PaymentTransaction {
 		this.errorCallback = errorCallback;
 	}
 
-	void perform(final ShoppingItem[] itemList, final ShoppingItem bill) {
+	public void perform(final ShoppingItem[] itemList, final ShoppingItem bill) {
 		callQueue.add(new OpenShop());
 		callQueue.add(new AddItems(bill));
 		callQueue.add(new Checkout());
