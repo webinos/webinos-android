@@ -31,12 +31,15 @@ import org.webinos.api.devicestatus.PropertyValueSuccessCallback;
 import org.webinos.api.devicestatus.WatchOptions;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
 import android.telephony.TelephonyManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings.System;
 import android.util.Log;
 import android.widget.Toast;
+import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -89,6 +92,16 @@ public class DevicestatusImpl extends DevicestatusManager implements IModule {
 		{
 			if(prop.property.equals("macAddress"))
 				prop_value = mWiFiManager.getConnectionInfo().getMacAddress();
+		}
+		else if (prop.aspect.equals("Battery"))
+		{
+			if(prop.property.equals("batteryLevel")) {
+			    IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			    Intent batteryStatus = androidContext.registerReceiver(null, ifilter);
+
+			    int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			    prop_value = String.valueOf(status);
+			}	
 		}
 		
 		Log.d(TAG, String.format("getPropertyValue: aspect=%s, prop_value=%s", prop.aspect, prop_value));
