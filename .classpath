@@ -2,11 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="src" path="libnode_src"/>
-	<classpathentry kind="src" path="bridge_java_src"/>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/base"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/eyes-free"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/media"/>
@@ -14,5 +9,10 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/content"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ui"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/shell"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="src" path="libnode_src"/>
+	<classpathentry kind="src" path="bridge_java_src"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
