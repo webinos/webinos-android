@@ -133,7 +133,7 @@ public class PaymentTransaction {
 				/* if there's no next call, we're done */
 				if(callQueue.isEmpty()) {
 					if(finish()) {
-						String proofOfPurchase = "Reciept received"; /* we don't get one from the engine */
+						String proofOfPurchase = "Receipt received"; /* we don't get one from the engine */
 						successCallback.onSuccess(proofOfPurchase);
 					}
 					return true;

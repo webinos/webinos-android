@@ -23,6 +23,8 @@ import org.meshpoint.anode.AndroidContext;
 import org.meshpoint.anode.bridge.Env;
 import org.meshpoint.anode.module.IModule;
 import org.meshpoint.anode.module.IModuleContext;
+import org.webinos.api.payment.PaymentError;
+import org.webinos.api.payment.PaymentErrors;
 import org.webinos.api.payment.PaymentChallengeCB;
 import org.webinos.api.payment.PaymentErrorCB;
 import org.webinos.api.payment.PaymentManager;
@@ -50,9 +52,18 @@ public class PaymentDemoWalletImpl extends PaymentManager implements IModule {
 			final ShoppingItem[] itemList, final ShoppingItem bill, final String customerID,
 			final String sellerID) {
 			
-		Log.d(TAG, "Received bill with price " + bill.itemsPrice + " and desc " + bill.description);
-		PaymentTransaction transaction = new PaymentTransaction(androidContext, customerID, sellerID, successCallback, errorCallback);
-		transaction.perform(itemList, bill);
+		Log.d(TAG, "Received bill with price " + bill.itemsPrice + " and description " + bill.description);
+		try{
+			PaymentTransaction transaction = new PaymentTransaction(androidContext, customerID, sellerID, successCallback, errorCallback);
+			transaction.perform(itemList, bill);
+		} catch (Exception e) {
+			e.printStackTrace();
+			PaymentError error = new PaymentError();
+			error.message = "The payment failed";
+			error.code = PaymentErrors.PAYMENT_CHARGE_FAILED;
+			errorCallback.onError(error);
+		}
+		
 	}
 
 	/*****************************

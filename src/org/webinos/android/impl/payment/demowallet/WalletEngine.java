@@ -107,7 +107,10 @@ public class WalletEngine {
         message.replyTo = new Messenger(new WalletEngineIncomingMessageHandler());
         message.what = code;
         try {
-            messenger.send(message);
+			if (messenger!=null)
+				messenger.send(message);
+			else
+				Log.e(TAG, "Can not communicate with DemoWallet. Perhaps not installed?");
         } catch (RemoteException e) {
             Log.e(TAG, "Can not send message",e);
         }
@@ -126,7 +129,10 @@ public class WalletEngine {
         message.setData(msgBundle);
 
         try {
-            messenger.send(message);
+            if (messenger!=null)
+				messenger.send(message);
+			else
+				Log.e(TAG, "Can not communicate with DemoWallet. Perhaps not installed?");
         } catch (RemoteException e) {
             Log.e(TAG, "Can not send message",e);
         }
