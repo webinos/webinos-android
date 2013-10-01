@@ -17,7 +17,6 @@
 package org.webinos.android.util;
 
 public interface Constants {
-
 	public static final String RESOURCE_DIR = "/data/data/org.webinos.android/uriCache";
 	public static final String MODULE_DIR = "/data/data/org.webinos.android/node_modules";
 	public static final String APP_DIR = "/data/data/org.webinos.android/app";
