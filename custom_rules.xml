@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="imported">
-    
+
     <!-- ANDROID_HOME environment variable must be defined -->
-    
+
     <target name="anode">
         <available file="libs/anode" type="dir" property="anode.got"/>
         <if>
             <condition><isset property="anode.got"/></condition>
             <then>
-                <echo>Pull Anode latest master...</echo>
+                <echo>Pull anode latest master...</echo>
                 <exec dir="libs/anode" executable="git" failonerror="true">
                     <arg line="pull --rebase"/>
                 </exec>
@@ -20,8 +20,8 @@
             </else>
         </if>
     </target>
-    
-    <target name="-pre-build">
+
+    <target name="webinos-deps">
         <!-- npm install -->
         <exec dir="." executable="cmd" failonerror="true" osfamily="windows">
             <arg value="/c"/>
@@ -31,14 +31,55 @@
         <exec dir="." executable="npm" failonerror="true" osfamily="unix">
             <arg line="install"/>
         </exec>
-        
-        <!-- Delete compiled node addons that were built for pc arch -->
+
+        <!-- delete compiled node addons that were built for pc arch -->
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/certificate_manager.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/promptMan.node"/>
-        
-        <!-- Create assets/modules/webinos.zip -->
+
+        <!-- fix the ugly hack in webinos-pzp/node_modules/webinos-utilities to
+            make it npm prune safe -->
+        <exec dir="." executable="node" failonerror="true" osfamily="unix">
+            <arg line="libs/ant_fix_webinos_pzp.js"/>
+        </exec>
+
+        <!-- configure to the specific device profile -->
+        <!-- TODO: For other osfamilies like windows -->
+
+        <!-- clean up ./node_modules/webinos-pzp/node_modules -->
+        <available file="node_modules/webinos-pzp/_package.json" type="file"
+            property="origin_pzp"/>
+        <if>
+            <condition><isset property="origin_pzp"/></condition>
+            <then>
+                <exec dir="node_modules/webinos-pzp" executable="cp"
+                    failonerror="true" osfamily="unix">
+                    <arg line="_package.json package.json"/>
+                </exec>
+                <exec dir="node_modules/webinos-pzp" executable="npm"
+                    failonerror="true" osfamily="unix">
+                    <arg line="prune"/>
+                </exec>
+            </then>
+            <else>
+                <exec dir="node_modules/webinos-pzp" executable="cp"
+                    failonerror="true" osfamily="unix">
+                    <arg line="package.json _package.json"/>
+                </exec>
+            </else>
+        </if>
+
+        <!-- get webinos-api-* into ./node_modules/webinos-pzp/node_modules -->
+        <condition property="device" value="${device}" else="default">
+            <isset property="device"/>
+        </condition>
+        <echo message="Configure device webinos APIs for ${device}..."/>
+        <script language="javascript" src="${basedir}/libs/ant_config_profile.js"/>
+    </target>
+
+    <target name="webinos-zip">
+        <delete file="assets/modules/webinos.zip"/>
         <zip destfile="assets/modules/webinos.zip">
             <zipfileset dir="."
                 includes="
@@ -50,10 +91,7 @@
                     **/.gitignore"/>
         </zip>
     </target>
-    
-    <target name="-pre-clean">
-        <delete file="assets/modules/webinos.zip"/>
-        <delete file="assets/js/webinos.js"/>
-    </target>
-    
+
+    <target name="-pre-build" depends="webinos-zip"/>
+
 </project>

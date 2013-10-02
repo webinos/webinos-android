@@ -1,0 +1,17 @@
+{
+  "default": {
+    "webinos-api-app2app": "git://github.com/webinos/webinos-api-app2app.git",
+    "webinos-api-applauncher": "git://github.com/webinos/webinos-api-applauncher.git",
+    "webinos-api-contacts": "git://github.com/webinos/webinos-api-contacts.git",
+    "webinos-api-deviceDiscovery": "git://github.com/webinos/webinos-api-deviceDiscovery.git",
+    "webinos-api-deviceOrientation": "git://github.com/webinos/webinos-api-deviceOrientation.git",
+    "webinos-api-deviceStatus": "git://github.com/webinos/webinos-api-deviceStatus.git",
+    "webinos-api-events": "git://github.com/webinos/webinos-api-events.git",
+    "webinos-api-file": "git://github.com/webinos/webinos-api-file.git",
+    "webinos-api-geolocation": "git://github.com/webinos/webinos-api-geolocation.git",
+    "webinos-api-media": "git://github.com/webinos/webinos-api-media.git",
+    "webinos-api-nfc": "git://github.com/webinos/webinos-api-nfc.git",
+    "webinos-api-sensors": "git://github.com/webinos/webinos-api-sensors.git"
+  },
+  "noapi": {}
+}

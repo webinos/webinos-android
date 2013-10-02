@@ -174,7 +174,7 @@ public class PlatformInit extends Service {
 			if(!result)
 				waiter.onBlock();
 		}
-		return result;	
+		return result;
 	}
 
 	/*******************
@@ -248,13 +248,14 @@ public class PlatformInit extends Service {
 		postInstallIntent.setData(Uri.parse("package://org.webinos.android.app"));
 		sendBroadcast(postInstallIntent);
 	}
-	
+
 	private void checkModule(String asset, boolean force) {
 		ModuleType modType = ModuleUtils.guessModuleType(asset);
 		String module = ModuleUtils.guessModuleName(asset, modType);
 		File installLocation = ModuleUtils.getModuleFile(module, modType);
 		if(installLocation.exists()) {
-			if(force) {
+			File pkg = new File(getPackageResourcePath());
+			if(force || pkg.exists() && installLocation.lastModified() < pkg.lastModified()) {
 				Log.v(TAG, "Module already installed, removing: " + module);
 				ModuleUtils.uninstall(module);
 			} else {

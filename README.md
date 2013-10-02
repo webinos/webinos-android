@@ -41,7 +41,7 @@ Other Linux distributions, emulated Linux environments, or Unix-like systems are
 
 #### Install Node
 
-We have tested building webinos-android with Node v0.8.x. 'apt-get install nodejs' might not give you the wanted Node version, so instead please download a v0.8.x release from here:
+We need Node v0.8.x (x>=14). 'apt-get install nodejs' might not give you a required Node version. If so please download a ~v0.8.14 version from here:
 
 http://nodejs.org/dist/
 
@@ -108,7 +108,13 @@ You can get the source code from GitHub.
 To build a debug installer, execute
 
     cd webinos-android
-    ant anode clean debug
+    ant anode webinos-deps -Ddevice=<profile> clean debug
+
+In the command,
+
+* Target *anode* puts anode source under webinos-android/libs with its own Git.
+* Target *webinos-deps* installs webinos dependencies into webinos-android/node_modules with npm.
+* Property *device* is the device profile that includes defined webinos APIs. Current device profiles are defined in webinos-android/config_profiles.json. If the -D option is omitted, the default profile will be used.
 
 If successful the target is generated as
 
@@ -117,7 +123,7 @@ bin/webinos-android-debug.apk
 
 ### Build webinos-android with ADT Eclipse
 
-We support ADT Version 22.0.x.
+ADT Version 22.0.x is supported. We still need Ant to get the dependencies.
 
 1. Import the project into Eclipse
   
@@ -131,23 +137,17 @@ We support ADT Version 22.0.x.
 
 2. Get project dependencies (can be skipped if you have already run command line Ant build)
   
-  1) In the "Run" menu select "External tools" -> "External Tools Configurations..."
+  1) In the "Run" menu select "External tools" -> "External Tools Configurations...".
   
   2) In the "External Tools Configurations" window, expand "Ant Build", you will see the configuration named *configuration_ant*.
   
-  3) Select the configuration and click "Run". In the "Console" View window you should see the project webinos-android successfully built.
+  3) Select the configuration. In the "Arguments:" box in the "Main" tab, replace *-Ddevice=default* with *-Ddevice=&lt;profile&gt;*, where *&lt;profile&gt;* is your selected device profile, click "Apply", and click "Run". In the "Console" View window you should see the webinos dependencies being built in.
 
 3. Build and run
   
   1) To make sure the dependencies are included, right-click the wbinos-android project, in the pop-up menu click "Refresh".
   
-  2) Make sure your Android device or emulator is connected. 
-  
-  3) In the "Run" menu, select "Run Configurations...".
-  
-  4) In the "Run Configurations" window, expand "Android Application", you will see the configration named *webinos-android*.
-  
-  5) Select the configuration and click "Run". If successful the application should be running on your device. The installer is created as
+  2) Build and run as Android application. If successful the installer is created as
 
   bin/webinos-android.apk
 
