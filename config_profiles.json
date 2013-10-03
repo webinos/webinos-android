@@ -10,8 +10,8 @@
     "webinos-api-file": "git://github.com/webinos/webinos-api-file.git",
     "webinos-api-geolocation": "git://github.com/webinos/webinos-api-geolocation.git",
     "webinos-api-media": "git://github.com/webinos/webinos-api-media.git",
-    "webinos-api-nfc": "git://github.com/webinos/webinos-api-nfc.git",
-    "webinos-api-sensors": "git://github.com/webinos/webinos-api-sensors.git"
+    "webinos-api-mediaContent": "git://github.com/webinos/webinos-api-mediaContent.git",
+    "webinos-api-nfc": "git://github.com/webinos/webinos-api-nfc.git"
   },
   "noapi": {}
 }
