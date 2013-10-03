@@ -152,3 +152,11 @@ ADT Version 22.0.x is supported. We still need Ant to get the dependencies.
   bin/webinos-android.apk
 
 
+## Windows Notes
+
+On windows, if you are using visual studio 2012, you will have to manually specify the visual studio version on node-gyp otherwise you will get an error:
+"error MSB8020: The builds tools for Visual Studio 2010 (Platform Toolset = 'v100') cannot be found".
+In order to get pass this error, modify the custom_rules.xml file and add the "--msvs_version=2012" argument in the npm command (line 30) by adding the following line:
+
+    <arg line="--msvs_version=2012"/>
+	
