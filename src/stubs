@@ -149,4 +149,11 @@ org.webinos.api.mediacontent.MediaItemSuccessCallback
 org.webinos.api.mediacontent.ThumbnailCallback
 org.webinos.api.media.PlaybackManager
 org.webinos.api.media.MediaCallback
-
+org.webinos.api.payment.PaymentError
+org.webinos.api.payment.ShoppingItem
+org.webinos.api.payment.PaymentChallengeType
+org.webinos.api.payment.PaymentErrors
+org.webinos.api.payment.PaymentManager
+org.webinos.api.payment.PaymentChallengeCB
+org.webinos.api.payment.PaymentErrorCB
+org.webinos.api.payment.PaymentSuccessCB
