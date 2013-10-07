@@ -79,6 +79,11 @@ public class ContentShellActivity extends ChromiumActivity {
             if (commandLineParams != null) {
                 CommandLine.getInstance().appendSwitchesAndArguments(commandLineParams);
             }
+            //enable autoplay video in html5 video/audio tags for Android
+            CommandLine.getInstance().appendSwitch("disable-gesture-requirement-for-media-playback");
+
+            //enable WebGL
+            CommandLine.getInstance().appendSwitch("enable-webgl");
         }
         waitForDebuggerIfNeeded();
 
