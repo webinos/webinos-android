@@ -37,6 +37,10 @@
         <delete file="node_modules/webinos-pzp/node_modules/webinos-certificateHandler/node_modules/webinos-keyStorage/node_modules/keystore.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/pm.node"/>
         <delete file="node_modules/webinos-pzp/node_modules/webinos-policy/node_modules/promptMan.node"/>
+        <delete dir="node_modules/webinos-widget/node_modules/zipfile"/>
+        <delete dir="node_modules/webinos-widget/node_modules/node-expat"/>
+        <delete dir="node_modules/webinos-widget/node_modules/dcrypt"/>
+        <delete dir="node_modules/webinos-widget/node_modules/.bin"/>
 
         <!-- fix the ugly hack in webinos-pzp/node_modules/webinos-utilities to
             make it npm prune safe -->
