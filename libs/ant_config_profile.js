@@ -3,6 +3,7 @@
 importClass(java.io.File);
 importClass(java.io.FileReader);
 importClass(java.io.BufferedReader);
+importClass(org.apache.tools.ant.taskdefs.condition.Os);
 
 var br = new BufferedReader(new FileReader(basedir + "/config_profiles.json"));
 var json = "";
@@ -23,7 +24,13 @@ if(target_profile === undefined) {
 for(var api in target_profile) {
     var exec = project.createTask("exec");
     exec.setDir(new File(basedir + "/node_modules/webinos-pzp"));
-    exec.setExecutable("npm");
+    if (Os.isFamily("windows")) {
+        exec.setExecutable("cmd");
+        exec.createArg().setValue("/c");
+        exec.createArg().setValue("npm.cmd");
+    } else {
+        exec.setExecutable("npm");
+    }
     exec.createArg().setValue("install");
     exec.createArg().setValue(target_profile[api]);
     exec.createArg().setValue("--save");
