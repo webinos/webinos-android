@@ -88,10 +88,15 @@
                 excludes="
                     **/build/,
                     **/deps/,
-                    **/.gitignore"/>
+                    **/.gitignore,
+                    node_modules/webinos-widget/node_modules/.bin/,
+                    node_modules/webinos-widget/node_modules/zipfile/,
+                    node_modules/webinos-widget/node_modules/node-expat/,
+                    node_modules/webinos-widget/node_modules/dcrypt/"/>
         </zip>
     </target>
 
     <target name="-pre-build" depends="webinos-zip"/>
 
 </project>
+

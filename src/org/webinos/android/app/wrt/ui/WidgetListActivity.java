@@ -86,7 +86,7 @@ public class WidgetListActivity extends ListActivity
 	private Store[] stores;
 	private ProgressDialog progressDialog;
 	private int progress;
-	private final int PROGRESS_MAX = 11;
+	private final int PROGRESS_MAX = 10;
 	private boolean blocked;
 	private ProgressBroadcastReceiver progressBroadcastReceiver;
 
