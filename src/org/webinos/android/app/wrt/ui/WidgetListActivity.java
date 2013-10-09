@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webinos.android.R;
 import org.webinos.android.app.pzp.ConfigActivity;
+import org.webinos.android.app.wrt.mgr.WidgetConfig;
 import org.webinos.android.app.wrt.mgr.WidgetManagerImpl;
 import org.webinos.android.app.wrt.mgr.WidgetManagerService;
 import org.webinos.android.util.AssetUtils;
@@ -89,6 +90,7 @@ public class WidgetListActivity extends ListActivity
 	private int progress;
 	private final int PROGRESS_MAX = 10;
 	private boolean blocked;
+	private boolean useAndroidWebView=false;
 	private ProgressBroadcastReceiver progressBroadcastReceiver;
 
 	@Override
@@ -296,12 +298,26 @@ public class WidgetListActivity extends ListActivity
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		String item = (String) getListAdapter().getItem(position);
+		String installId = (String) getListAdapter().getItem(position);
 		Context ctx = getApplicationContext();
-		Intent wrtIntent = new Intent(CONTENTSHELLSTART); //Alternate WRT, Android webview: new Intent(ACTION_START);
-		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
-		wrtIntent.putExtra(ID, "http://localhost:8080/apps/"+item+"/wgt/index.html");
-		ctx.startActivity(wrtIntent);
+		Intent wrtIntent;
+		if(useAndroidWebView){
+			wrtIntent = new Intent(ACTION_START);
+			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+			wrtIntent.putExtra(ID, installId);
+			ctx.startActivity(wrtIntent);
+		} else {
+			wrtIntent = new Intent(CONTENTSHELLSTART);
+			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+			WidgetConfig widgetConfig = mgr.getWidgetConfig(installId);
+			if (widgetConfig != null) {
+				String indexFilename = widgetConfig.startFile.path;
+				//TODO: get the actual pzp http port
+				String pzpHttpPort = "8080";
+				wrtIntent.putExtra(ID, "http://localhost:"+pzpHttpPort+"/apps/"+installId+"/wgt/"+indexFilename);
+				ctx.startActivity(wrtIntent);
+			}
+		}
 	}
 
 	private void initList() {
