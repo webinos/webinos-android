@@ -50,27 +50,30 @@ public class PZPNotificationManagerImpl extends PZPNotificationManager implement
     @Override
     public void eventNotify(String status,
                             PZPNotificationCallback pzpCallBack) throws DeviceAPIError {
-        Log.v(TAG, "eventNotify");
+        Log.v(TAG, "eventNotify, "+status);
         
         try {
-            NotificationManager mNotificationManager = (NotificationManager) androidContext
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            
-            Notification updateStatus = new Notification();
-            updateStatus.icon = R.drawable.webinos_notify;
-            
-            updateStatus.tickerText = status;
-            updateStatus.when = System.currentTimeMillis();
-            
-            CharSequence contentTitle = "PZP Status Notification";
-            CharSequence contentText = status;
-            
-            Intent notificationIntent = new Intent(androidContext, PZPNotificationManagerImpl.class);
-            PendingIntent contentIntent = PendingIntent.getActivity(androidContext, 0, notificationIntent, 0);
-            
-            updateStatus.setLatestEventInfo(androidContext, contentTitle, contentText, contentIntent); 
-            
-            mNotificationManager.notify(PZP_STATUS_NOTIFICATION, updateStatus);
+		//The PZP Port isn't meant to be visually displayed as Notification
+		if(!status.startsWith("PZP_PORT:")) {
+		    NotificationManager mNotificationManager = (NotificationManager) androidContext
+		            .getSystemService(Context.NOTIFICATION_SERVICE);
+
+		    Notification updateStatus = new Notification();
+		    updateStatus.icon = R.drawable.webinos_notify;
+
+		    updateStatus.tickerText = status;
+		    updateStatus.when = System.currentTimeMillis();
+
+		    CharSequence contentTitle = "PZP Status Notification";
+		    CharSequence contentText = status;
+
+		    Intent notificationIntent = new Intent(androidContext, PZPNotificationManagerImpl.class);
+		    PendingIntent contentIntent = PendingIntent.getActivity(androidContext, 0, notificationIntent, 0);
+
+		    updateStatus.setLatestEventInfo(androidContext, contentTitle, contentText, contentIntent);
+
+		    mNotificationManager.notify(PZP_STATUS_NOTIFICATION, updateStatus);
+		}
             
             Intent responseIntent = new Intent(notificationResponseAction);
             responseIntent.putExtra("status", status);

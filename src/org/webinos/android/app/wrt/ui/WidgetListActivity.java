@@ -91,6 +91,7 @@ public class WidgetListActivity extends ListActivity
 	private final int PROGRESS_MAX = 10;
 	private boolean blocked;
 	private boolean useAndroidWebView=false;
+	private String pzpWebsocketPort="8080";
 	private ProgressBroadcastReceiver progressBroadcastReceiver;
 
 	@Override
@@ -311,10 +312,8 @@ public class WidgetListActivity extends ListActivity
 			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
 			WidgetConfig widgetConfig = mgr.getWidgetConfig(installId);
 			if (widgetConfig != null) {
-				String indexFilename = widgetConfig.startFile.path;
-				//TODO: get the actual pzp http port
-				String pzpHttpPort = "8080";
-				wrtIntent.putExtra(ID, "http://localhost:"+pzpHttpPort+"/apps/"+installId+"/wgt/"+indexFilename);
+				String startFile = widgetConfig.startFile.path;
+				wrtIntent.putExtra(ID, "http://localhost:"+pzpWebsocketPort+"/apps/"+installId+"/wgt/"+startFile);
 				ctx.startActivity(wrtIntent);
 			}
 		}
@@ -328,6 +327,8 @@ public class WidgetListActivity extends ListActivity
 
 	/********************
 	 * Progress bar handling
+	 *  as part of the progress handling pzp notifications are evaluated.
+	 *  In final step od the initialisation the pzp port is communicated.
 	 ********************/
 
 	private class ProgressBroadcastReceiver extends BroadcastReceiver {
@@ -341,6 +342,9 @@ public class WidgetListActivity extends ListActivity
 					synchronized(progressDialog) {
 						progressDialog.setProgress(++progress < PROGRESS_MAX ? progress : PROGRESS_MAX);
 					}
+				}
+				if( action.equals(ACTION_PZP_NOTIFICATION) && extras != null && extras.getString("status").startsWith("PZP_PORT:") ) {
+					pzpWebsocketPort=extras.getString("status").substring(9);
 				}
 			}
 		}
