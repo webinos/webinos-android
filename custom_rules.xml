@@ -40,8 +40,20 @@
 
         <!-- fix the ugly hack in webinos-pzp/node_modules/webinos-utilities to
             make it npm prune safe -->
-        <exec dir="." executable="node" failonerror="true" osfamily="unix">
-            <arg line="libs/ant_fix_webinos_pzp.js"/>
+        <exec dir="assets/js" executable="node"
+            failonerror="true" osfamily="unix">
+            <arg line="ant_fix_webinos_pzp.js"/>
+        </exec>
+
+        <!-- configure webinos-widget WRT HOME -->
+        <script language="javascript"
+            src="${basedir}/assets/js/ant_get_wrt_property.js"/>
+        <fail
+            message="wrtHome is missing. Make sure to generate it from assets/config/wrt.properties."
+            unless="wrtHome"/>
+        <exec dir="assets/js" executable="node"
+            failonerror="true" osfamily="unix">
+            <arg line="ant_config_widget.js ${wrtHome}"/>
         </exec>
 
         <!-- configure to the specific device profile -->
@@ -75,7 +87,8 @@
             <isset property="device"/>
         </condition>
         <echo message="Configure device webinos APIs for ${device}..."/>
-        <script language="javascript" src="${basedir}/libs/ant_config_profile.js"/>
+        <script language="javascript"
+            src="${basedir}/assets/js/ant_config_profile.js"/>
     </target>
 
     <target name="webinos-zip">
