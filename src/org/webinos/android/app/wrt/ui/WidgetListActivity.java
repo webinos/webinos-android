@@ -337,7 +337,7 @@ public class WidgetListActivity extends ListActivity
 			if(blocked && progressDialog != null) {
 				String action = intent.getAction();
 				Bundle extras = intent.getExtras();
-				if( action.equals(ACTION_PZP_NOTIFICATION) && extras != null && extras.getString("status").equals("progress") ||
+				if( action.equals(ACTION_PZP_NOTIFICATION) && extras != null && extras.getString("status").equals("Initialized") ||
 					action.equals(ACTION_PROGRESS) ) {
 					synchronized(progressDialog) {
 						progressDialog.setProgress(++progress < PROGRESS_MAX ? progress : PROGRESS_MAX);
