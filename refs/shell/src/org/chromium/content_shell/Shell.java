@@ -37,17 +37,18 @@ public class Shell extends LinearLayout {
     private Runnable mClearProgressRunnable = new Runnable() {
         @Override
         public void run() {
-            mProgressDrawable.setLevel(0);
+            //mProgressDrawable.setLevel(0);
         }
     };
 
     // TODO(jrg): a mContentView.destroy() call is needed, both upstream and downstream.
     private ContentView mContentView;
-    private EditText mUrlTextView;
+    /*private EditText mUrlTextView;
     private ImageButton mPrevButton;
     private ImageButton mNextButton;
 
     private ClipDrawable mProgressDrawable;
+    */
 
     private ContentViewRenderView mContentViewRenderView;
     private WindowAndroid mWindow;
@@ -97,13 +98,13 @@ public class Shell extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mProgressDrawable = (ClipDrawable) findViewById(R.id.toolbar).getBackground();
-        initializeUrlField();
-        initializeNavigationButtons();
+        //mProgressDrawable = (ClipDrawable) findViewById(R.id.toolbar).getBackground();
+        //initializeUrlField();
+        //initializeNavigationButtons();
     }
 
     private void initializeUrlField() {
-        mUrlTextView = (EditText) findViewById(R.id.url);
+        /*mUrlTextView = (EditText) findViewById(R.id.url);
         mUrlTextView.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -128,7 +129,7 @@ public class Shell extends LinearLayout {
                     mUrlTextView.setText(mContentView.getUrl());
                 }
             }
-        });
+        });*/
     }
 
     /**
@@ -145,7 +146,7 @@ public class Shell extends LinearLayout {
         } else {
             mContentView.loadUrl(new LoadUrlParams(sanitizeUrl(url)));
         }
-        mUrlTextView.clearFocus();
+        //mUrlTextView.clearFocus();
         // TODO(aurimas): Remove this when crbug.com/174541 is fixed.
         mContentView.clearFocus();
         mContentView.requestFocus();
@@ -163,7 +164,7 @@ public class Shell extends LinearLayout {
     }
 
     private void initializeNavigationButtons() {
-        mPrevButton = (ImageButton) findViewById(R.id.prev);
+        /*mPrevButton = (ImageButton) findViewById(R.id.prev);
         mPrevButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,20 +178,20 @@ public class Shell extends LinearLayout {
             public void onClick(View v) {
                 if (mContentView.canGoForward()) mContentView.goForward();
             }
-        });
+        });*/
     }
 
     @SuppressWarnings("unused")
     @CalledByNative
     private void onUpdateUrl(String url) {
-        mUrlTextView.setText(url);
+        //mUrlTextView.setText(url);
     }
 
     @SuppressWarnings("unused")
     @CalledByNative
     private void onLoadProgressChanged(double progress) {
         removeCallbacks(mClearProgressRunnable);
-        mProgressDrawable.setLevel((int) (10000.0 * progress));
+        //mProgressDrawable.setLevel((int) (10000.0 * progress));
         if (progress == 1.0) postDelayed(mClearProgressRunnable, COMPLETED_PROGRESS_TIMEOUT_MS);
     }
 
@@ -217,7 +218,7 @@ public class Shell extends LinearLayout {
     @CalledByNative
     private void initFromNativeTabContents(int nativeTabContents) {
         mContentView = ContentView.newInstance(getContext(), nativeTabContents, mWindow);
-        if (mContentView.getUrl() != null) mUrlTextView.setText(mContentView.getUrl());
+        //if (mContentView.getUrl() != null) mUrlTextView.setText(mContentView.getUrl());
         ((FrameLayout) findViewById(R.id.contentview_holder)).addView(mContentView,
                 new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
@@ -234,12 +235,12 @@ public class Shell extends LinearLayout {
     }
 
     private void setKeyboardVisibilityForUrl(boolean visible) {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
+        /*InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         if (visible) {
             imm.showSoftInput(mUrlTextView, InputMethodManager.SHOW_IMPLICIT);
         } else {
             imm.hideSoftInputFromWindow(mUrlTextView.getWindowToken(), 0);
-        }
+        }*/
     }
 }

@@ -88,8 +88,11 @@ public class ContentShellActivity extends ChromiumActivity {
         waitForDebuggerIfNeeded();
 
         DeviceUtils.addDeviceSpecificUserAgentSwitch(this);
-        try {
-            LibraryLoader.ensureInitialized();
+		try {
+			if(!LibraryLoader.isInitialized()){
+				LibraryLoader.ensureInitialized();
+			}
+
         } catch (ProcessInitException e) {
             Log.e(TAG, "ContentView initialization failed.", e);
             finish();
@@ -102,40 +105,33 @@ public class ContentShellActivity extends ChromiumActivity {
         mWindowAndroid.restoreInstanceState(savedInstanceState);
         mShellManager.setWindow(mWindowAndroid);
 
-        String startupUrl = getUrlFromIntent(getIntent());
+        final String startupUrl = getUrlFromIntent(getIntent());
         if (!TextUtils.isEmpty(startupUrl)) {
             mShellManager.setStartupUrl(Shell.sanitizeUrl(startupUrl));
         }
 
-        if (CommandLine.getInstance().hasSwitch(CommandLine.DUMP_RENDER_TREE)) {
-            if(BrowserStartupController.get(this).startBrowserProcessesSync(
-                   BrowserStartupController.MAX_RENDERERS_LIMIT)) {
-                finishInitialization(savedInstanceState);
-            } else {
+
+        BrowserStartupController.get(this).startBrowserProcessesAsync(
+                new BrowserStartupController.StartupCallback() {
+            @Override
+            public void onSuccess(boolean alreadyStarted) {
+                finishInitialization(savedInstanceState,startupUrl);
+            }
+
+            @Override
+            public void onFailure() {
                 initializationFailed();
             }
-        } else {
-            BrowserStartupController.get(this).startBrowserProcessesAsync(
-                    new BrowserStartupController.StartupCallback() {
-                @Override
-                public void onSuccess(boolean alreadyStarted) {
-                    finishInitialization(savedInstanceState);
-                }
+        });
 
-                @Override
-                public void onFailure() {
-                    initializationFailed();
-                }
-            });
-        }
     }
 
-    private void finishInitialization(Bundle savedInstanceState) {
-        String shellUrl = ShellManager.DEFAULT_SHELL_URL;
+    private void finishInitialization(Bundle savedInstanceState, String shellUrl) {
+        /*String shellUrl = ShellManager.DEFAULT_SHELL_URL;
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(ACTIVE_SHELL_URL_KEY)) {
             shellUrl = savedInstanceState.getString(ACTIVE_SHELL_URL_KEY);
-        }
+        }*/
         mShellManager.launchShell(shellUrl);
         getActiveContentView().setContentViewClient(new ContentViewClient() {
             @Override
