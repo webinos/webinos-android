@@ -4,6 +4,10 @@
 
 package org.webinos.android.wrt.ui;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -127,12 +131,29 @@ public class ContentShellActivity extends ChromiumActivity {
     }
 
     private void finishInitialization(Bundle savedInstanceState, String shellUrl) {
-        /*String shellUrl = ShellManager.DEFAULT_SHELL_URL;
-        if (savedInstanceState != null
-                && savedInstanceState.containsKey(ACTIVE_SHELL_URL_KEY)) {
-            shellUrl = savedInstanceState.getString(ACTIVE_SHELL_URL_KEY);
-        }*/
         mShellManager.launchShell(shellUrl);
+        //Inject webinos APIs
+        StringBuffer fileContent=null;
+        try{
+            File webinosJS = new File(ContentShellApplication.getAppContext().getFilesDir().getParentFile().getPath()+
+            "/node_modules/webinos/node_modules/webinos-pzp/web_root/webinos.js");
+            FileInputStream fis = new FileInputStream (webinosJS);
+	        fileContent = new StringBuffer(((int) webinosJS.length())*4);
+	        byte[] buffer = new byte[1024];
+	        int len=fis.read(buffer);
+	        while (len != -1) {
+	            fileContent.append(new String(buffer,0,len));
+	            len = fis.read(buffer);
+	        }
+	        fis.close();
+        }catch(Exception e){
+            Log.e(TAG, "Injection of webinos APIs failed.", e);
+        }
+
+        getActiveContentView().getContentViewCore()
+            .evaluateJavaScript(((fileContent!=null)?fileContent.toString():""), null);
+
+
         getActiveContentView().setContentViewClient(new ContentViewClient() {
             @Override
             public ContentVideoViewClient getContentVideoViewClient() {
