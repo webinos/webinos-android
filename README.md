@@ -114,7 +114,7 @@ In the command,
 
 * Target *anode* puts anode source under webinos-android/libs with its own Git.
 * Target *webinos-deps* installs webinos dependencies into webinos-android/node_modules with npm.
-* Property *device* is the device profile that includes defined webinos APIs. Current device profiles are defined in webinos-android/config_profiles.json. If the -D option is omitted, the default profile will be used.
+* Property *device* is the device profile that includes defined webinos APIs. Current device profiles are defined in webinos-android/assets/config/device_profiles.json. If the -D option is omitted, the default profile will be used.
 
 If successful the target is generated as
 
@@ -152,11 +152,3 @@ ADT Version 22.0.x is supported. We still need Ant to get the dependencies.
   bin/webinos-android.apk
 
 
-## Windows Notes
-
-On windows, if you are using visual studio 2012, you will have to manually specify the visual studio version on node-gyp otherwise you will get an error:
-"error MSB8020: The builds tools for Visual Studio 2010 (Platform Toolset = 'v100') cannot be found".
-In order to get pass this error, modify the custom_rules.xml file and add the "--msvs_version=2012" argument in the npm command (line 30) by adding the following line:
-
-    <arg line="--msvs_version=2012"/>
-	
