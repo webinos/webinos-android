@@ -15,11 +15,9 @@ public class MediaFolder implements Dictionary {
   public String title;
   public String storageType;
   public Date modifiedDate;
-  
-  public MediaFolder() {
-    
-  }
-  
+
+  public MediaFolder() {}
+
   public MediaFolder(String id, String uri, String title, String storageType,
       Date modifiedDate) {
     this.id = id;

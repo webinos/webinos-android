@@ -23,7 +23,7 @@ webinos-android is an Android application project with npm package management. O
 
     sudo apt-get install ia32-libs
 
-Other Linux distributions, emulated Linux environments, or Unix-like systems are not fully tested but should work, maybe with some twistings. It is also possible for you to derive a build process based on instructions here for other platforms like Windows, Mac OS. A few Windows build notes can be found in webinos-android/windows_notes.md.
+Other Linux distributions, emulated Linux environments, or Unix-like systems are not fully tested but should work, maybe with some twistings. It is also possible for you to derive a build process based on instructions here for other platforms like Windows, Mac OS. A few Windows build notes can be found in webinos-android/build_notes.md in the source package.
 
 
 ### Prerequisites

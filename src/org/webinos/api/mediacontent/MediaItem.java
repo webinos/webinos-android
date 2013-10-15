@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.meshpoint.anode.idl.Dictionary;
 
+/* FIXME:
+ * Move Android dependence from org/webinos/api to org/webinos/android/impl */
+
 import android.provider.MediaStore;
 
 public class MediaItem implements Dictionary {

@@ -2,6 +2,9 @@ package org.webinos.api.mediacontent;
 
 import java.util.Map;
 
+/* FIXME:
+ * Move Android dependence from org/webinos/api to org/webinos/android/impl */
+
 import android.provider.MediaStore;
 
 public class MediaImage extends MediaItem {
