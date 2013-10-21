@@ -9,7 +9,7 @@
     "webinos-api-events": "git://github.com/webinos/webinos-api-events.git",
     "webinos-api-file": "git://github.com/webinos/webinos-api-file.git",
     "webinos-api-geolocation": "git://github.com/webinos/webinos-api-geolocation.git",
-    "webinos-api-media": "git://github.com/webinos/webinos-api-media.git",
+    "webinos-api-mediaplay": "git://github.com/webinos/webinos-api-mediaplay.git",
     "webinos-api-mediaContent": "git://github.com/webinos/webinos-api-mediaContent.git",
     "webinos-api-nfc": "git://github.com/webinos/webinos-api-nfc.git",
     "webinos-api-payment": "git://github.com/webinos/webinos-api-payment.git",
