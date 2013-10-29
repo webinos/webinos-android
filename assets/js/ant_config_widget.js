@@ -6,13 +6,13 @@ var fs = require("fs");
 var interfaceFile = "../../node_modules/webinos-widget/platform_interfaces.json";
 
 if(!fs.existsSync(interfaceFile)) {
-    fs.writeFileSync(interfaceFile, '{"android": {"wrt": ""}}');
+    fs.writeFileSync(interfaceFile, '{"android": {"wrt_home": ""}}');
 }
 
 var packageJsonObj = require(interfaceFile);
 
 if(packageJsonObj["android"] === undefined) {
-    packageJsonObj.android = {"wrt": ""};
+    packageJsonObj.android = {"wrt_home": ""};
 }
-packageJsonObj["android"]["wrt"] = process.argv[2];
+packageJsonObj["android"]["wrt_home"] = process.argv[2];
 fs.writeFileSync(interfaceFile, JSON.stringify(packageJsonObj, null, 2));
