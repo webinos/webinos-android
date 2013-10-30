@@ -506,45 +506,50 @@ class LocalMediaSource extends MediaSource {
             }
           } catch (ID3Exception e) {
             Log.d("NewMediaAudio", "Getting mp3 tag error for " + mediaAudio.itemURI + " Exception: " + e);
-          } finally {
-            /* unrecognised mp3 safety */
-            checkForNullTagsAudio(mediaAudio);
           }
-        } else {
-          /* use MediaMetadataRetriever to get media tags */
-          MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-          mmr.setDataSource(mediaAudio.itemURI);
-          try {
+        }
+        /* use MediaMetadataRetriever to get media tags */
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(mediaAudio.itemURI);
+        try {
+          if(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM) != null)
             mediaAudio.album = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+
+          if(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST) != null)
             mediaAudio.artists = new String[] {
               mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
             };
+
+          if(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE) != null)
             mediaAudio.genres = new String[] {
               mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE)
             };
+
+          if(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_COMPOSER) != null)
             mediaAudio.composers = new String[] {
               mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_COMPOSER)
             };
-            mediaAudio.trackNumber = Integer.parseInt(
-              mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER)
-            );
-            mediaAudio.duration = Long.parseLong(
-              mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION),
-              10
-            );
-            /* lyrics not supported by MediaMetadataRetriever */
-            /* copyright not supported by MediaMetadataRetriever */
-            /* bitrate not supported by MediaMetadataRetriever */
-            /* playedTime not supported by MediaMetadataRetriever */
-            /* playCount not supported by MediaMetadataRetriever */
-            mmr.release();
-          } catch (Exception e) {
-            Log.d("NewMeidaAudio", "Metadata retrieving error for: " + mediaAudio.itemURI + " Exception: " + e);
-          } finally {
-            /* unrecognised audio safety */
-            checkForNullTagsAudio(mediaAudio);
-          }
+
+          mediaAudio.trackNumber = Integer.parseInt(
+            mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER)
+          );
+
+          mediaAudio.duration = Long.parseLong(
+            mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION),
+            10
+          );
+
+          /* lyrics not supported by MediaMetadataRetriever */
+          /* copyright not supported by MediaMetadataRetriever */
+          /* bitrate not supported by MediaMetadataRetriever */
+          /* playedTime not supported by MediaMetadataRetriever */
+          /* playCount not supported by MediaMetadataRetriever */
+          mmr.release();
+        } catch (Exception e) {
+          Log.d("NewMeidaAudio", "Metadata retrieving error for: " + mediaAudio.itemURI + " Exception: " + e);
         }
+        /* unrecognised audio safety */
+        checkForNullTagsAudio(mediaAudio);
       }
 
       Log.d("api", "album of " + mediaAudio.itemURI + " is " + mediaAudio.album);
