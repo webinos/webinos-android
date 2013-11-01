@@ -1,80 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.webinos.android"
-      android:versionCode="1"
-      android:versionName="1.0"
-      android:installLocation="auto">
-      
-    <uses-sdk android:minSdkVersion="11"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.NFC"/>
-    <uses-feature android:name="android.hardware.wifi"/>
-    
-    <application android:label="@string/app_name"
-                 android:icon="@drawable/webinos_icon">
-                 
-        <activity android:name=".impl.PromptActivity"
-                  android:label="@string/app_name"/>
-        
-        <activity android:name=".impl.nfc.WebinosNfcActivity"
-                  android:label="WebinosNfcActivity"
-                  android:launchMode="singleInstance"
-                  android:excludeFromRecents="true"/>
-        
-        <activity android:name=".app.anode.AnodeActivity"
-                  android:label="@string/app_name">
+    package="org.webinos.android"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <!-- chromium additions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission
+        android:name="org.chromium.content_shell.permission.SANDBOX"
+        android:protectionLevel="signature" />
+
+    <uses-feature android:name="android.hardware.wifi" />
+
+    <application
+        android:name=".wrt.ui.ContentShellApplication"
+        android:icon="@drawable/webinos_icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".wrt.ui.ContentShellActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
-                <action android:name="org.webinos.android.app.MAIN"/>
+                <action android:name="org.webinos.android.wrt.ui.ContentShellActivity" />
+                <category android:name="android.intent.category.DEFAULT" /> 
             </intent-filter>
         </activity>
-        
-        <activity android:name=".app.pzp.ConfigActivity"
-                  android:label="@string/pzp_activity_name"
-                  android:launchMode="singleTop"
-                  android:taskAffinity="org.webinos.android.app.pzp"
-                  android:alwaysRetainTaskState="true"
-                  android:allowTaskReparenting="true">
+
+        <activity
+            android:name="org.webinos.android.impl.PromptActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.webinos.android.impl.nfc.WebinosNfcActivity"
+            android:excludeFromRecents="true"
+            android:label="WebinosNfcActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name="org.webinos.android.app.anode.AnodeActivity"
+            android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="org.webinos.android.app.MAIN" />
             </intent-filter>
         </activity>
-        
-        <activity android:name=".app.wrt.ui.WidgetInstallActivity"
-                  android:label="@string/install_activity_title"/>
-        
-        <activity android:name=".app.wrt.ui.WidgetDownloadActivity"
-                  android:label="@string/download_activity_title">
+        <activity
+            android:name="org.webinos.android.app.pzp.ConfigActivity"
+            android:allowTaskReparenting="true"
+            android:alwaysRetainTaskState="true"
+            android:label="@string/pzp_activity_name"
+            android:launchMode="singleTop"
+            android:taskAffinity="org.webinos.android.app.pzp" >
             <intent-filter>
-                <action android:name="org.webinos.android.app.wgt.INSTALL"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="http"
-                      android:mimeType="application/widget"/>
-                <data android:scheme="https"
-                      android:mimeType="application/widget"/>
-                <data android:scheme="file"
-                      android:mimeType="application/widget"/>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="org.webinos.android.app.wrt.ui.WidgetInstallActivity"
+            android:label="@string/install_activity_title" />
+        <activity
+            android:name="org.webinos.android.app.wrt.ui.WidgetDownloadActivity"
+            android:label="@string/download_activity_title" >
+            <intent-filter>
+                <action android:name="org.webinos.android.app.wgt.INSTALL" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:mimeType="application/widget"
+                    android:scheme="http" />
+                <data
+                    android:mimeType="application/widget"
+                    android:scheme="https" />
+                <data
+                    android:mimeType="application/widget"
+                    android:scheme="file" />
+            </intent-filter>
+        </activity>
         <activity android:name=".app.wrt.ui.WidgetUninstallActivity"
                   android:label="@string/uninstall_activity_title"/>
         
@@ -87,107 +120,186 @@
                   android:enabled="true"
                   android:configChanges="keyboardHidden|orientation">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <receiver android:name=".app.anode.AnodeReceiver"
-                  android:enabled="true"
-                  android:label="@string/anode_receiver"
-                  android:exported="true"
-                  android:description="@string/anode_receiver_description">
+
+        <receiver
+            android:name="org.webinos.android.app.anode.AnodeReceiver"
+            android:description="@string/anode_receiver_description"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/anode_receiver" >
             <intent-filter>
-                <action android:name="org.webinos.android.app.POSTINSTALL"/>
+                <action android:name="org.webinos.android.app.POSTINSTALL" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.START"/>
+                <action android:name="org.webinos.android.app.START" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.STOP"/>
+                <action android:name="org.webinos.android.app.STOP" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.STOPALL"/>
+                <action android:name="org.webinos.android.app.STOPALL" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.module.INSTALL"/>
+                <action android:name="org.webinos.android.app.module.INSTALL" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.module.UNINSTALL"/>
+                <action android:name="org.webinos.android.app.module.UNINSTALL" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.wgt.INSTALL"/>
+                <action android:name="org.webinos.android.app.wgt.INSTALL" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.app.wgt.UNINSTALL"/>
+                <action android:name="org.webinos.android.app.wgt.UNINSTALL" />
             </intent-filter>
         </receiver>
-        
-        <service android:name=".app.anode.AnodeService"
-                 android:label="@string/anode_service"
-                 android:description="@string/anode_service_description"
-                 android:exported="true"
-                 android:enabled="true"/>
-        
-        <service android:name=".app.platform.PlatformInit"
-                 android:label="@string/pzp_service"
-                 android:description="@string/platform_service_description"
-                 android:exported="true"
-                 android:enabled="true"/>
-        
-        <service android:name=".app.pzp.PzpService"
-                 android:label="@string/pzp_service"
-                 android:description="@string/pzp_service_description"
-                 android:exported="true"
-                 android:enabled="true"/>
-        
-        <service android:name=".app.wrt.mgr.WidgetManagerService"
-                 android:label="@string/wgtmgr_service"
-                 android:description="@string/wgtmgr_service_description"
-                 android:exported="true"
-                 android:enabled="true"/>
-        
-        <service android:name=".app.wrt.channel.WebinosSocketService">
+
+        <service
+            android:name="org.webinos.android.app.anode.AnodeService"
+            android:description="@string/anode_service_description"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/anode_service" />
+        <service
+            android:name="org.webinos.android.app.platform.PlatformInit"
+            android:description="@string/platform_service_description"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/pzp_service" />
+        <service
+            android:name="org.webinos.android.app.pzp.PzpService"
+            android:description="@string/pzp_service_description"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/pzp_service" />
+        <service
+            android:name="org.webinos.android.app.wrt.mgr.WidgetManagerService"
+            android:description="@string/wgtmgr_service_description"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/wgtmgr_service" />
+        <service android:name="org.webinos.android.app.wrt.channel.WebinosSocketService" >
             <intent-filter>
-                <action android:name="org.webinos.android.wrt.channel.SERVER"/>
+                <action android:name="org.webinos.android.wrt.channel.SERVER" />
             </intent-filter>
         </service>
-        
-        <provider android:name=".app.wrt.provider.WidgetContentProvider"
-                  android:authorities="org.webinos.android.wrt"/>
-        
+
+        <provider
+            android:name="org.webinos.android.app.wrt.provider.WidgetContentProvider"
+            android:authorities="org.webinos.android.wrt" />
+
         <!-- WRT -->
-        
-        <activity android:name=".wrt.ui.RendererActivity"
-                  android:label="@string/renderer_activity_title"
-                  android:configChanges="orientation|keyboardHidden"
-                  android:process="org.webinos.android.wrt">
+
+        <activity
+            android:name="org.webinos.android.wrt.ui.RendererActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/renderer_activity_title"
+            android:process="org.webinos.android.wrt" >
             <intent-filter>
-                <action android:name="org.webinos.android.wrt.START"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="org.webinos.android.wrt.START" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-        <receiver android:name=".wrt.core.WrtReceiver"
-                  android:label="@string/wrt_receiver"
-                  android:description="@string/wrt_receiver_description"
-                  android:exported="true"
-                  android:enabled="true"
-                  android:process="org.webinos.android.wrt">
+
+        <receiver
+            android:name="org.webinos.android.wrt.core.WrtReceiver"
+            android:description="@string/wrt_receiver_description"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/wrt_receiver"
+            android:process="org.webinos.android.wrt" >
             <intent-filter>
-                <action android:name="org.webinos.android.wrt.START"/>
+                <action android:name="org.webinos.android.wrt.START" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.wrt.STOP"/>
+                <action android:name="org.webinos.android.wrt.STOP" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.webinos.android.wrt.STOPALL"/>
+                <action android:name="org.webinos.android.wrt.STOPALL" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name="org.webinos.android.wrt.core.WrtManager"
+            android:enabled="true"
+            android:process="org.webinos.android.wrt" />
         
-        <service android:name=".wrt.core.WrtManager"
-                 android:enabled="true"
-                 android:process="org.webinos.android.wrt"/>
-        
+        <!-- The following service entries exist in order to allow us to
+             start more than one sandboxed process. -->
+
+        <!-- NOTE: If you change the values of "android:process" for any of the below services,
+             you also need to update kHelperProcessExecutableName in chrome_constants.cc. -->
+        <service android:name="org.chromium.content.app.SandboxedProcessService0"
+                 android:process=":sandboxed_process0"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService1"
+                 android:process=":sandboxed_process1"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService2"
+                 android:process=":sandboxed_process2"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService3"
+                 android:process=":sandboxed_process3"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService4"
+                 android:process=":sandboxed_process4"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService5"
+                 android:process=":sandboxed_process5"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService6"
+                 android:process=":sandboxed_process6"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService7"
+                 android:process=":sandboxed_process7"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService8"
+                 android:process=":sandboxed_process8"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService9"
+                 android:process=":sandboxed_process9"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService10"
+                 android:process=":sandboxed_process10"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService11"
+                 android:process=":sandboxed_process11"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />
+        <service android:name="org.chromium.content.app.SandboxedProcessService12"
+                 android:process=":sandboxed_process12"
+                 android:permission="org.chromium.content_shell.permission.SANDBOX"
+                 android:isolatedProcess="true"
+                 android:exported="false" />        
+
     </application>
+
 </manifest>

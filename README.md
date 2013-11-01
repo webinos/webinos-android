@@ -23,7 +23,7 @@ webinos-android is an Android application project with npm package management. O
 
     sudo apt-get install ia32-libs
 
-Other Linux distributions, emulated Linux environments, or Unix-like systems are not fully tested but should work, maybe with some twistings. It is also possible for you to derive a build process based on instructions here for other platforms like Windows, Mac OS. A few Windows build notes can be found in webinos-android/build_notes.md in the source package.
+Other Linux distributions, emulated Linux environments, or Unix-like systems are not fully tested but should work, maybe with some twistings. It is also possible for you to derive a build process based on instructions here for other platforms like Windows, Mac OS. Some Windows build notes and other tweaking tips can be found in webinos-android/build_notes.md in the source package.
 
 
 ### Prerequisites
@@ -133,7 +133,15 @@ ADT Version 22.0.x is supported. We still need Ant to get the dependencies.
   
   3) Click "Browse..." button, in the pop-up window select your webinos-android folder, click "OK".
   
-  4) In the "Import Projects" window, make sure in the "Project to Import" box only webinos-android is checked, then click "Finish".
+  4) In the "Project to Import" box of "Import Projects" window, select following projects and then click "Finish".
+    * webinos-android  
+    * base
+    * content
+    * eyes-free
+    * media
+    * net
+    * shell
+    * ui
 
 2. Get project dependencies (can be skipped if you have already run command line Ant build)
   
@@ -150,5 +158,4 @@ ADT Version 22.0.x is supported. We still need Ant to get the dependencies.
   2) Build and run as Android application. If successful the installer is created as
 
   bin/webinos-android.apk
-
 

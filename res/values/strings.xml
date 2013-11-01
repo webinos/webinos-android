@@ -45,4 +45,8 @@
     <string name="widget_icon">Widget Icon</string>
     <string name="wrt_receiver">WRT renderer intent receiver</string>
     <string name="wrt_receiver_description">An intent receiver that controls intents relating to WRT renderer lifecycle</string>
+    <string name="title_activity_content_shell">ContentShellActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="browser_process_initialization_failed">chromium initialisation failed.</string>
 </resources>

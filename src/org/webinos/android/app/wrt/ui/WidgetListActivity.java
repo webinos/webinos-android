@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webinos.android.R;
 import org.webinos.android.app.pzp.ConfigActivity;
+import org.webinos.android.app.wrt.mgr.WidgetConfig;
 import org.webinos.android.app.wrt.mgr.WidgetManagerImpl;
 import org.webinos.android.app.wrt.mgr.WidgetManagerService;
 import org.webinos.android.util.AssetUtils;
@@ -66,6 +67,7 @@ public class WidgetListActivity extends ListActivity
 	private static final String STORES_FILE = "config/stores.json";
 	private static final String ACTION_PROGRESS = "org.webinos.android.app.wrt.ui.PROGRESS";
 	private static final String ACTION_PZP_NOTIFICATION = "org.webinos.pzp.notification.response";
+	static final String CONTENTSHELLSTART = "org.webinos.android.wrt.ui.ContentShellActivity";
 	static final String ACTION_START = "org.webinos.android.wrt.START";
 	static final String ACTION_STOP = "org.webinos.android.wrt.STOP";
 	static final String ACTION_STOPALL = "org.webinos.android.wrt.STOPALL";
@@ -88,6 +90,8 @@ public class WidgetListActivity extends ListActivity
 	private int progress;
 	private final int PROGRESS_MAX = 10;
 	private boolean blocked;
+	private boolean useAndroidWebView=false;
+	private String pzpWebsocketPort="8080";
 	private ProgressBroadcastReceiver progressBroadcastReceiver;
 
 	@Override
@@ -295,13 +299,24 @@ public class WidgetListActivity extends ListActivity
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		String item = (String) getListAdapter().getItem(position);
+		String installId = (String) getListAdapter().getItem(position);
 		Context ctx = getApplicationContext();
-		Intent wrtIntent = new Intent(ACTION_START);
-		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			/* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
-		wrtIntent.putExtra(ID, item);
-		ctx.startActivity(wrtIntent);
+		Intent wrtIntent;
+		if(useAndroidWebView){
+			wrtIntent = new Intent(ACTION_START);
+			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+			wrtIntent.putExtra(ID, installId);
+			ctx.startActivity(wrtIntent);
+		} else {
+			wrtIntent = new Intent(CONTENTSHELLSTART);
+			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+			WidgetConfig widgetConfig = mgr.getWidgetConfig(installId);
+			if (widgetConfig != null) {
+				String startFile = widgetConfig.startFile.path;
+				wrtIntent.putExtra(ID, "http://localhost:"+pzpWebsocketPort+"/apps/"+installId+"/wgt/"+startFile);
+				ctx.startActivity(wrtIntent);
+			}
+		}
 	}
 
 	private void initList() {
@@ -312,6 +327,8 @@ public class WidgetListActivity extends ListActivity
 
 	/********************
 	 * Progress bar handling
+	 *  as part of the progress handling pzp notifications are evaluated.
+	 *  In final step od the initialisation the pzp port is communicated.
 	 ********************/
 
 	private class ProgressBroadcastReceiver extends BroadcastReceiver {
@@ -320,11 +337,14 @@ public class WidgetListActivity extends ListActivity
 			if(blocked && progressDialog != null) {
 				String action = intent.getAction();
 				Bundle extras = intent.getExtras();
-				if( action.equals(ACTION_PZP_NOTIFICATION) && extras != null && extras.getString("status").equals("progress") ||
+				if( action.equals(ACTION_PZP_NOTIFICATION) && extras != null && extras.getString("status").equals("Initialized") ||
 					action.equals(ACTION_PROGRESS) ) {
 					synchronized(progressDialog) {
 						progressDialog.setProgress(++progress < PROGRESS_MAX ? progress : PROGRESS_MAX);
 					}
+				}
+				if( action.equals(ACTION_PZP_NOTIFICATION) && extras != null && extras.getString("status").startsWith("PZP_PORT:") ) {
+					pzpWebsocketPort=extras.getString("status").substring(9);
 				}
 			}
 		}
