@@ -370,10 +370,14 @@ class LocalMediaSource extends MediaSource {
         }
 
         if(folderId != null) {
-          selection += " AND "
+          selection += " AND ("
               + MediaStore.Files.FileColumns.PARENT
               + " = "
-              + folderId;
+              + folderId + ")"
+              + " OR ("
+              + MediaStore.Files.FileColumns._ID
+              + " = "
+              + folderId + ")";
         }
 
         String sortOrder = null;
