@@ -5,8 +5,12 @@
           android:title="@string/scan_sd_card"
           android:showAsAction="ifRoom"
           android:orderInCategory="101"/>
+    <item android:id="@+id/pzp_dashboard"
+          android:title="@string/pzp_dashboard"
+          android:showAsAction="ifRoom"
+          android:orderInCategory="102"/>
     <item android:id="@+id/pzp_settings"
           android:title="@string/pzp_settings"
           android:showAsAction="ifRoom"
-          android:orderInCategory="102"/>
+          android:orderInCategory="103"/>
 </menu>

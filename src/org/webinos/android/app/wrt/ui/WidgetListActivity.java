@@ -230,6 +230,9 @@ public class WidgetListActivity extends ListActivity
 		case R.id.pzp_settings:
 			startActivity(new Intent(this, ConfigActivity.class));
 			return true;
+		case R.id.pzp_dashboard:
+			startWrtActivityForPath("dashboard/config");
+			return true;
 		default: 
 			if(itemId >= STORES_MENUITEM_BASE) {
 				Store store = stores[itemId - STORES_MENUITEM_BASE];
@@ -300,29 +303,37 @@ public class WidgetListActivity extends ListActivity
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		String installId = (String) getListAdapter().getItem(position);
-		Context ctx = getApplicationContext();
-		Intent wrtIntent;
-		if(useAndroidWebView){
-			wrtIntent = new Intent(ACTION_START);
-			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
-			wrtIntent.putExtra(ID, installId);
-			ctx.startActivity(wrtIntent);
-		} else {
-			wrtIntent = new Intent(CONTENTSHELLSTART);
-			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
-			WidgetConfig widgetConfig = mgr.getWidgetConfig(installId);
-			if (widgetConfig != null) {
-				String startFile = widgetConfig.startFile.path;
-				wrtIntent.putExtra(ID, "http://localhost:"+pzpWebsocketPort+"/apps/"+installId+"/wgt/"+startFile);
-				ctx.startActivity(wrtIntent);
-			}
-		}
+		startWrtActivityForWidget(installId);
 	}
 
 	private void initList() {
 		ids = mgr.getInstalledWidgets();
 		setListAdapter(new WidgetListAdapter(this, ids));
 		((TextView)findViewById(android.R.id.empty)).setText(getString(R.string.no_apps_installed));
+	}
+
+	private void startWrtActivityForWidget(String installId) {
+		if(useAndroidWebView){
+			Context ctx = getApplicationContext();
+			Intent wrtIntent = new Intent(ACTION_START);
+			wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+			wrtIntent.putExtra(ID, installId);
+			ctx.startActivity(wrtIntent);
+		} else {
+			WidgetConfig widgetConfig = mgr.getWidgetConfig(installId);
+			if (widgetConfig != null) {
+				String startFile = widgetConfig.startFile.path;
+				startWrtActivityForPath("/apps/"+installId+"/wgt/"+startFile);
+			}
+		}
+	}
+
+	private void startWrtActivityForPath(String path) {
+		Context ctx = getApplicationContext();
+		Intent wrtIntent = new Intent(CONTENTSHELLSTART);
+		wrtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); /* Intent.FLAG_INCLUDE_STOPPED_PACKAGES */
+		wrtIntent.putExtra(ID, "http://localhost:"+pzpWebsocketPort+path);
+		ctx.startActivity(wrtIntent);
 	}
 
 	/********************

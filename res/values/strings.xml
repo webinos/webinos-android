@@ -25,7 +25,8 @@
     <string name="pzp_activity_name">PZP</string>
     <string name="pzp_service">Webinos PZP Service</string>
     <string name="pzp_service_description">A service that controls the execution and lifecycle of the Webinos PZP</string>
-    <string name="pzp_settings">Settings</string>
+    <string name="pzp_dashboard">PZP Dashboard</string>
+    <string name="pzp_settings">PZP Settings</string>
     <string name="renderer_activity_title">Widget</string>
     <string name="run_state">Run state</string>
     <string name="scan_sd_card">Scan SD card</string>
