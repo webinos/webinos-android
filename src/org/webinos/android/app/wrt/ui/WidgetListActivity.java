@@ -231,7 +231,7 @@ public class WidgetListActivity extends ListActivity
 			startActivity(new Intent(this, ConfigActivity.class));
 			return true;
 		case R.id.pzp_dashboard:
-			startWrtActivityForPath("dashboard/config");
+			startWrtActivityForPath("/dashboard/config");
 			return true;
 		default: 
 			if(itemId >= STORES_MENUITEM_BASE) {
