@@ -88,6 +88,9 @@ public class ContentShellActivity extends ChromiumActivity {
 
             //enable WebGL
             CommandLine.getInstance().appendSwitch("enable-webgl");
+            
+            //quick fix for certificate chain errors / missing warning ui
+            CommandLine.getInstance().appendSwitch("ignore-certificate-errors");
         }
         waitForDebuggerIfNeeded();
 
