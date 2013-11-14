@@ -105,6 +105,7 @@ public class PzpService extends Service implements StateListener {
 	private Isolate isolate;
 	private PzpState state = PzpState.STATE_UNINITIALISED;
 	private static final String LASTCONFIG = "lastconfig";
+	private static final String LOGCONFIG = "logconfig";
 
 	/*******************
 	 * service prerequisites
@@ -141,6 +142,7 @@ public class PzpService extends Service implements StateListener {
 
 		if("true".equals(getConfig().autoStart))
 			startPzp();
+		//FIXME: if autoStart is set to false, init progress will not terminate, deadlock
 	}
 
 	@Override
@@ -155,12 +157,23 @@ public class PzpService extends Service implements StateListener {
 
 	public class ConfigParams {
 		String autoStart;
+		String verboseLogging;
 
 		void readConfig() {
 			BufferedReader reader = null;
 			try {
 				reader = new BufferedReader(new InputStreamReader(openFileInput(LASTCONFIG)));
 				autoStart = reader.readLine();
+			} catch (IOException e) {
+			} finally {
+				try {
+					if(reader != null)
+						reader.close();
+				} catch (IOException e) {}
+			}
+			try {
+				reader = new BufferedReader(new InputStreamReader(openFileInput(LOGCONFIG)));
+				verboseLogging = reader.readLine();
 			} catch (IOException e) {
 			} finally {
 				try {
@@ -175,6 +188,16 @@ public class PzpService extends Service implements StateListener {
 			try {
 				writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(LASTCONFIG, MODE_PRIVATE)));
 				writer.write(autoStart + '\n');
+			} catch (IOException e) {
+			} finally {
+				try {
+					if(writer != null)
+						writer.close();
+				} catch (IOException e) {}
+			}
+			try {
+				writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(LOGCONFIG, MODE_PRIVATE)));
+				writer.write(verboseLogging + '\n');
 			} catch (IOException e) {
 			} finally {
 				try {
@@ -198,6 +221,8 @@ public class PzpService extends Service implements StateListener {
 		Config config = Config.getInstance();
 		if(configParams.autoStart == null)
 			configParams.autoStart = config.getProperty("pzp.autoStart");
+		if(configParams.verboseLogging == null)
+			configParams.verboseLogging = config.getProperty("pzp.verboseLogging");
 	}
 
 	/*******************
@@ -213,7 +238,7 @@ public class PzpService extends Service implements StateListener {
 	}
 
 	public void startPzp() {
-		String cmd = configParams.getCmd();
+		String cmd = configParams.getCmd() + ("true".equals(configParams.verboseLogging)?" --debug":"");
 		Log.v(TAG, "PZP start: starting with cmd: " + cmd);
 		try {
 			Runtime.initRuntime(this, new String[]{});

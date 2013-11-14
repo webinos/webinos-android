@@ -44,6 +44,7 @@ public class ConfigActivity extends Activity implements PzpServiceListener, PzpS
 	private Button stopButton;
 	private TextView stateText;
 	private CheckBox autoStart;
+	private CheckBox verboseLogging;
 	private Handler viewHandler = new Handler();
 	private long uiThread;
 	
@@ -94,11 +95,21 @@ public class ConfigActivity extends Activity implements PzpServiceListener, PzpS
 		autoStart.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.v(TAG, "startButton.onClick(): requesting PZP start");
+				Log.v(TAG, "autoStart.onClick(): toggled autostart");
 				updateConfigFromForm();
 			}
 		});
-
+		verboseLogging = (CheckBox)findViewById(R.id.verbose_logging);
+		String verboseLoggingText = configParams.verboseLogging;
+		if(verboseLoggingText != null)
+			verboseLogging.setChecked("true".equals(verboseLoggingText));
+		verboseLogging.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.v(TAG, "verboseLogging.onClick(): toggled verbose logging");
+				updateConfigFromForm();
+			}
+		});
 
 		/* if the platform is not yet initialised, wait until that
 		 * has completed and retry */
@@ -119,6 +130,7 @@ public class ConfigActivity extends Activity implements PzpServiceListener, PzpS
 	private void updateConfigFromForm() {
 		ConfigParams configParams = pzpService.getConfig();
 		configParams.autoStart = String.valueOf(autoStart.isChecked());
+		configParams.verboseLogging = String.valueOf(verboseLogging.isChecked());
 		pzpService.updateConfig();
 	}
 
