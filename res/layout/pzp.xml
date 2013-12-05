@@ -4,9 +4,8 @@
     android:layout_height="wrap_content" >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -39,6 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/start_automatically" />
+
+        <CheckBox
+            android:id="@+id/verbose_logging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/verbose_logging" />
+
+
     </LinearLayout>
 
 </ScrollView>
